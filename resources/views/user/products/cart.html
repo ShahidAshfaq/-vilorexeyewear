@@ -1,0 +1,162 @@
+@extends('user.partials.layout')
+@section('content')
+<style>
+    .order-details, .customer-info {
+            margin-bottom: 20px;
+        }
+        .order-details table, .customer-info table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .order-details  {
+            text-align: left;
+            padding: 8px;
+            background-color: #f4f4f4;
+        }
+        
+</style>
+<div class="container pt-5  ">
+    <div class="container mt-5">
+       
+        
+        <div class="container pt-4">
+            <div class="row">
+                <!-- Product Info Section -->
+                <div class="col-lg-6">
+                    <h2 class="mb-4">Selected Product</h2>
+
+                    <div class="order-details">
+                        <h2>Order Details</h2>
+                        <table>
+                            <tr>
+                                <th>Order Number</th>
+                                <td>{{ $products->id }}</td>
+                            </tr>
+                            <tr>
+                                <th>Tracking Number</th>
+                                <td>
+                                    <?php
+                                    $timestamp = time(); // Current Unix timestamp
+                                    $randomNumber = rand(1000, 9999); // Random number
+                                    $trackingNumber = 'ORD-' . $timestamp . '-' . $randomNumber;
+                                    echo $trackingNumber;
+                                    ?>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Date</th>
+                                <td>{{ $products->created_at->format('d M Y H:i') }}</td>
+                            </tr>
+                            <tr>
+                                <th>Total Amount</th>
+                                <td>RS. {{ number_format($products->price, 2) }}</td>
+                            </tr>
+                            <tr>
+                                <th>Title</th>
+                                <td>{{ $products->title }}</td>
+                            </tr>
+                           
+                        </table>
+                    </div>
+            
+                    <div class="card">
+                        <div id="carousel-{{ $products->id }}" class="carousel slide" data-bs-ride="carousel">
+                            <div class="carousel-inner">
+                                @php
+                                    $images = json_decode($products->image);
+                                @endphp
+                                @if (!is_null($images) && is_array($images))
+                                    @foreach ($images as $key => $image)
+                                        <div class="carousel-item {{ $key === 0 ? 'active' : '' }}">
+                                            <img src="{{ asset('/storage/app/public/' . $image) }}" class="d-block w-100" alt="Product Image" style="height: 250px; object-fit: cover;">
+                                        </div>
+                                    @endforeach
+                                @else
+                                    <p>No images available</p>
+                                @endif
+                            </div>
+                            <a class="carousel-control-prev" href="#carousel-{{ $products->id }}" role="button" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </a>
+                            <a class="carousel-control-next" href="#carousel-{{ $products->id }}" role="button" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </a>
+                        </div>
+                        {{-- <div class="card-body">
+                            <h5 class="card-title">{{ $products->title }}</h5>
+                            <p class="card-text">RS. {{ $products->price }}</p>
+                            <p class="card-text">{{ $products->description }}</p>
+                        </div> --}}
+                    </div>
+                 
+                    
+                   
+                </div>
+        <br>
+                <!-- Form Section -->
+                <div class="col-lg-6">
+                    <div class="card shadow-lg">
+                        <div class="card-header bg-primary text-white text-center">
+                            <h3 class="text-white">Checkout</h3>
+                        </div>
+                        <div class="card-body p-4">
+                            <form action="{{ route('menu.store') }}" method="POST">
+                                @csrf
+                                <input type="text" name="order_no" value="{{ $trackingNumber}}" hidden>
+                                <div class="form-group mb-3">
+                                    <label for="name" class="form-label">Name:</label>
+                                    <input type="text" name="name" id="name" class="form-control" value="{{ old('name') }}" placeholder="Enter your name" required>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="phone" class="form-label">Phone:</label>
+                                    <input type="text" name="phone" id="phone" class="form-control" value="{{ old('phone') }}" placeholder="Enter your phone number" required>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="pantity" class="form-label">Qantity:</label>
+                                    <input type="number" name="qantity" max="5" min="1" class="form-control" value="1{{ old('qantity') }}" placeholder="Enter your qantity" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="city" class="form-label">City:</label>
+                                    <select name="city" id="city" class="form-control">
+                                        <option value="">Select City</option>
+                                        @foreach($city as $citi)
+                                        <option value="{{ $citi->name }}">
+                                            {{ $citi->name }}
+                                        </option>
+                                    @endforeach
+                                    </select>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="address" class="form-label">Address:</label>
+                                    <textarea name="address" id="address" class="form-control" rows="3" placeholder="Enter your address" required>{{ old('address') }}</textarea>
+                                </div>
+                                <div class="form-group mb-4">
+                                    <label for="product_id" class="form-label">Product:</label>
+                                    <select name="product_id" id="product_id" class="form-select" required>
+                                        
+                                            <option value="{{ $products->id }}">{{ $products->title }}
+                                            </option>
+                                        
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-lg w-100">Add to Cart</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
+      
+        
+        
+    </div>
+    
+</div>
+
+
+
+@endsection

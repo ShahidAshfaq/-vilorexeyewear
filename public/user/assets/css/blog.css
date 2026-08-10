@@ -1,0 +1,192 @@
+/* ================================
+   🌿 Blog Page Styles (Shopify Inspired)
+   ================================ */
+
+/* Global Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Section & Container */
+.about-us-banner {
+    background: linear-gradient(135deg, #fafafa, #ffffff);
+    padding: 120px 0 80px;
+    border-bottom: 1px solid #eee;
+}
+
+.about-us-banner h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #111;
+}
+
+.about-us-banner p {
+    color: #666;
+    font-size: 1.1rem;
+}
+
+/* Blog Grid Section */
+.home-blog-three {
+    background: #fff;
+}
+
+.blog-heading h3 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #222;
+    position: relative;
+}
+
+.blog-heading h3::after {
+    content: "";
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    width: 60px;
+    height: 3px;
+    background: #d4a762;
+    border-radius: 5px;
+}
+
+/* Card Styles */
+.card {
+    border: none;
+    border-radius: 16px;
+    overflow: hidden;
+    background: #fff;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+
+/* Blog Image */
+.card-img-top {
+    height: 240px;
+    object-fit: cover;
+    transition: all 0.4s ease;
+    border-bottom: 1px solid #f1f1f1;
+}
+
+.card:hover .card-img-top {
+    transform: scale(1.05);
+}
+
+/* Card Body */
+.card-body {
+    padding: 20px;
+}
+
+.card-body .bi {
+    font-size: 1rem;
+    color: #d4a762;
+}
+
+.card-body span {
+    font-size: 0.9rem;
+    color: #666;
+}
+
+/* Category Badge */
+.category-name {
+    background: #d4a762 !important;
+    color: #fff;
+    font-size: 0.8rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    border-radius: 20px;
+    padding: 5px 12px;
+    letter-spacing: 0.5px;
+}
+
+/* Blog Title */
+.card-title a {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #222;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.card-title a:hover {
+    color: #d4a762;
+}
+
+/* Blog Text */
+.card-text {
+    color: #666;
+    line-height: 1.6;
+}
+
+/* Read More Button */
+.btn-outline-dark {
+    border-color: #d4a762;
+    color: #d4a762;
+    border-radius: 50px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    padding: 8px 20px;
+}
+
+.btn-outline-dark:hover {
+    background: #d4a762;
+    color: #fff;
+}
+
+/* Pagination */
+.pagination {
+    margin-top: 50px;
+}
+
+.page-link {
+    color: #222;
+    border: none;
+    background: transparent;
+    font-weight: 500;
+}
+
+.page-link:hover {
+    color: #d4a762;
+    background: transparent;
+}
+
+.page-item.active .page-link {
+    background: #d4a762;
+    color: #fff;
+    border-radius: 50px;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .about-us-banner {
+        padding: 100px 0 60px;
+    }
+
+    .about-us-banner h1 {
+        font-size: 2.4rem;
+    }
+
+    .card-img-top {
+        height: 200px;
+    }
+}
+
+@media (max-width: 768px) {
+    .about-us-banner {
+        padding: 80px 0 50px;
+    }
+
+    .about-us-banner h1 {
+        font-size: 2rem;
+    }
+
+    .card-body {
+        padding: 16px;
+    }
+}
