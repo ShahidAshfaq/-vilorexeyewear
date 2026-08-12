@@ -4,14 +4,34 @@
 
         <div class="row gy-5">
 
-            <!-- About -->
-            <div class="col-lg-4 col-md-6">
+            {{-- ================= ABOUT ================= --}}
+            <div class="col-lg-4 col-md-6 col-12">
 
                 <div class="footer-widget">
 
                     <h2 class="footer-logo">
-                        Store
+
+                        <a href="{{ route('home') }}"
+                            class="logo d-flex align-items-center justify-content-center justify-content-lg-center">
+
+                            @if ($store?->logo)
+
+                                <img
+                                    src="{{ asset('storage/app/public/' . $store->logo) }}"
+                                    class="store-logo img-fluid"
+                                    alt="{{ $store->name }}"
+                                >
+
+                            @else
+
+                                <span>{{ $store->name }}</span>
+
+                            @endif
+
+                        </a>
+
                     </h2>
+
 
                     <p class="footer-text">
                         Discover premium quality products at affordable prices.
@@ -19,74 +39,74 @@
                         with fast delivery and excellent customer support.
                     </p>
 
-                    <h5 class="footer-title mt-4">
-                        Connect With Us
-                    </h5>
 
+                    {{-- SOCIAL ICONS --}}
                     <div class="social-icons">
 
-                        {{-- @if($store) --}}
+                        @if ($store->instagram)
+                            <a href="{{ $store->instagram }}"
+                               target="_blank"
+                               rel="noopener noreferrer">
 
-    {{-- Instagram --}}
-    @if($store->instagram)
-        <a href="{{ $store->instagram }}"
-           target="_blank"
-           rel="noopener noreferrer">
-            <i class="fab fa-instagram"></i>
-        </a>
-    @endif
+                                <i class="fab fa-instagram"></i>
 
-
-    {{-- Facebook --}}
-    @if($store->facebook)
-        <a href="{{ $store->facebook }}"
-           target="_blank"
-           rel="noopener noreferrer">
-            <i class="fab fa-facebook-f"></i>
-        </a>
-    @endif
+                            </a>
+                        @endif
 
 
-    {{-- TikTok --}}
-    @if($store->tiktok)
-        <a href="{{ $store->tiktok }}"
-           target="_blank"
-           rel="noopener noreferrer">
-            <i class="fab fa-tiktok"></i>
-        </a>
-    @endif
+                        @if ($store->facebook)
+                            <a href="{{ $store->facebook }}"
+                               target="_blank"
+                               rel="noopener noreferrer">
+
+                                <i class="fab fa-facebook-f"></i>
+
+                            </a>
+                        @endif
 
 
-    {{-- X / Twitter --}}
-    @if($store->twitter)
-        <a href="{{ $store->twitter }}"
-           target="_blank"
-           rel="noopener noreferrer">
-            <i class="fab fa-x-twitter"></i>
-        </a>
-    @endif
+                        @if ($store->tiktok)
+                            <a href="{{ $store->tiktok }}"
+                               target="_blank"
+                               rel="noopener noreferrer">
+
+                                <i class="fab fa-tiktok"></i>
+
+                            </a>
+                        @endif
 
 
-    {{-- Pinterest --}}
-    @if($store->pinterest)
-        <a href="{{ $store->pinterest }}"
-           target="_blank"
-           rel="noopener noreferrer">
-            <i class="fab fa-pinterest-p"></i>
-        </a>
-    @endif
+                        @if ($store->twitter)
+                            <a href="{{ $store->twitter }}"
+                               target="_blank"
+                               rel="noopener noreferrer">
+
+                                <i class="fab fa-x-twitter"></i>
+
+                            </a>
+                        @endif
 
 
-    {{-- YouTube --}}
-    @if($store->youtube)
-        <a href="{{ $store->youtube }}"
-           target="_blank"
-           rel="noopener noreferrer">
-            <i class="fab fa-youtube"></i>
-        </a>
-    @endif
+                        @if ($store->pinterest)
+                            <a href="{{ $store->pinterest }}"
+                               target="_blank"
+                               rel="noopener noreferrer">
 
-{{-- @endif --}}
+                                <i class="fab fa-pinterest-p"></i>
+
+                            </a>
+                        @endif
+
+
+                        @if ($store->youtube)
+                            <a href="{{ $store->youtube }}"
+                               target="_blank"
+                               rel="noopener noreferrer">
+
+                                <i class="fab fa-youtube"></i>
+
+                            </a>
+                        @endif
 
                     </div>
 
@@ -95,10 +115,8 @@
             </div>
 
 
-
-            <!-- Shop -->
-
-            <div class="col-lg-2 col-md-6">
+            {{-- ================= SHOP ================= --}}
+            <div class="col-lg-2 col-md-6 col-6">
 
                 <div class="footer-widget">
 
@@ -108,33 +126,35 @@
 
                     <ul>
 
-    @forelse($categories as $category)
+                        @forelse($categories as $category)
 
-        <li>
-            <a href="{{ route('product.index', ['category_id' => $category->id]) }}">
-                {{ $category->name }}
-            </a>
-        </li>
+                            <li>
 
-    @empty
+                                <a href="{{ route('product.index', ['category_id' => $category->id]) }}">
 
-        <li>
-            <span>No categories available</span>
-        </li>
+                                    {{ $category->name }}
 
-    @endforelse
+                                </a>
 
-</ul>
+                            </li>
+
+                        @empty
+
+                            <li>
+                                <span>No categories available</span>
+                            </li>
+
+                        @endforelse
+
+                    </ul>
 
                 </div>
 
             </div>
 
 
-
-            <!-- Support -->
-
-            <div class="col-lg-2 col-md-6">
+            {{-- ================= SUPPORT ================= --}}
+            <div class="col-lg-2 col-md-6 col-6">
 
                 <div class="footer-widget">
 
@@ -145,24 +165,27 @@
                     <ul>
 
                         <li>
-                            <a href="{{ route('user.about') }}">Help Center</a>
+                            <a href="{{ route('user.about') }}">
+                                Help Center
+                            </a>
                         </li>
 
                         <li>
-                            <a href="{{ route('order.track') }}">Order Status</a>
+                            <a href="{{ route('order.track') }}">
+                                Order Status
+                            </a>
                         </li>
-                        <li>
-                            <a href="{{ route('user.privacy') }}"> Privacy</a>
-                        </li>
-
-
-                        {{-- <li>
-                            <a href="">Returns</a>
-                        </li> --}}
-
 
                         <li>
-                            <a href="{{ route('user.contact') }}">Contact Us</a>
+                            <a href="{{ route('user.privacy') }}">
+                                Privacy
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="{{ route('user.contact') }}">
+                                Contact Us
+                            </a>
                         </li>
 
                     </ul>
@@ -172,10 +195,8 @@
             </div>
 
 
-
-            <!-- Contact -->
-
-            <div class="col-lg-4 col-md-6">
+            {{-- ================= CONTACT ================= --}}
+            <div class="col-lg-4 col-md-6 col-12">
 
                 <div class="footer-widget">
 
@@ -183,165 +204,67 @@
                         Contact Information
                     </h4>
 
+
                     <ul class="contact-list">
 
-                        @if($store)
+                        @if ($store)
 
-    {{-- Address --}}
-    @if($store->address)
-        <li>
-            <i class="fas fa-map-marker-alt"></i>
+                            {{-- ADDRESS --}}
+                            @if ($store->address)
 
-            <span>
-                {{ $store->address }}
-                @if($store->city)
-                    , {{ $store->city }}
-                @endif
-            </span>
-        </li>
-    @endif
+                                <li>
 
+                                    <i class="fas fa-map-marker-alt"></i>
 
-    {{-- Phone --}}
-    @if($store->phone)
-        <li>
-            <i class="fas fa-phone"></i>
+                                    <span>
 
-            <span>
-                {{ $store->phone }}
-            </span>
-        </li>
-    @endif
+                                        {{ $store->address }}
+
+                                        @if ($store->city)
+                                            , {{ $store->city }}
+                                        @endif
+
+                                    </span>
+
+                                </li>
+
+                            @endif
 
 
-    {{-- Email --}}
-    @if($store->email)
-        <li>
-            <i class="fas fa-envelope"></i>
+                            {{-- PHONE --}}
+                            @if ($store->phone)
 
-            <span>
-                {{ $store->email }}
-            </span>
-        </li>
-    @endif
+                                <li>
 
-@endif
+                                    <i class="fas fa-phone"></i>
 
-                        <li>
+                                    <span>
+                                        {{ $store->phone }}
+                                    </span>
 
-                            <i class="far fa-clock"></i>
+                                </li>
 
-                            <span>
+                            @endif
 
-                                Monday-Friday : 9AM - 6PM
 
-                                <br>
+                            {{-- EMAIL --}}
+                            @if ($store->email)
 
-                                Saturday : 10AM - 4PM
+                                <li>
 
-                                <br>
+                                    <i class="fas fa-envelope"></i>
 
-                                Sunday : Closed
+                                    <span>
+                                        {{ $store->email }}
+                                    </span>
 
-                            </span>
+                                </li>
 
-                        </li>
+                            @endif
+
+                        @endif
 
                     </ul>
-
-
-
-                    <!-- App Buttons -->
-
-                    {{-- <div class="app-buttons mt-4">
-
-                        <a href="#" class="app-btn">
-
-                            <i class="fab fa-apple"></i>
-
-                            App Store
-
-                        </a>
-
-                        <a href="#" class="app-btn">
-
-                            <i class="fab fa-google-play"></i>
-
-                            Google Play
-
-                        </a>
-
-                    </div> --}}
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-
-    <!-- Bottom Footer -->
-
-    <div class="footer-bottom">
-
-        <div class="container">
-
-            <div class="row align-items-center gy-3">
-
-                <div class="col-lg-6">
-
-                    <p>
-
-                        © {{ date('Y') }}
-
-                        <strong>Store</strong>
-
-                        All Rights Reserved.
-
-                    </p>
-
-                </div>
-
-
-
-                <div class="col-lg-3 text-center">
-
-                    <div class="payment-icons">
-
-                        <i class="fab fa-cc-visa"></i>
-
-                        <i class="fab fa-cc-mastercard"></i>
-
-                        <i class="fab fa-cc-paypal"></i>
-
-                        <i class="fab fa-cc-apple-pay"></i>
-
-                    </div>
-
-                </div>
-
-
-
-                <div class="col-lg-3">
-
-                    <div class="footer-links">
-
-                        <a href="#">
-                            Terms
-                        </a>
-
-                        <a href="#">
-                            Privacy
-                        </a>
-
-                        <a href="#">
-                            Cookies
-                        </a>
-
-                    </div>
 
                 </div>
 
@@ -352,3 +275,176 @@
     </div>
 
 </footer>
+<style>
+    /* =========================================
+   FOOTER RESPONSIVE
+========================================= */
+
+.footer {
+    overflow: hidden;
+}
+
+.footer-widget {
+    width: 100%;
+}
+
+.footer-logo {
+    margin-bottom: 20px;
+}
+
+.footer-logo .store-logo {
+    max-width: 150px;
+    width: auto;
+    height: auto;
+    max-height: 60px;
+    object-fit: contain;
+}
+
+.footer-text {
+    max-width: 420px;
+}
+
+
+/* Contact information */
+
+.contact-list {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.contact-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+.contact-list li i {
+    flex-shrink: 0;
+    margin-top: 4px;
+}
+
+
+/* Social icons */
+
+.social-icons {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.social-icons a {
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 991px) {
+
+    .footer {
+        padding-top: 50px;
+        padding-bottom: 30px;
+    }
+
+    .footer-widget {
+        margin-bottom: 10px;
+    }
+
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 767px) {
+
+    .footer {
+        padding-top: 40px;
+        padding-bottom: 25px;
+    }
+
+    .footer-logo {
+        text-align: center;
+    }
+
+    .footer-logo .logo {
+        justify-content: center !important;
+    }
+
+    .footer-text {
+        max-width: 100%;
+        text-align: center;
+        font-size: 14px;
+        line-height: 1.7;
+    }
+
+    .social-icons {
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+    .footer-title {
+        font-size: 17px;
+        margin-bottom: 15px;
+    }
+
+    .footer-widget ul {
+        padding-left: 0;
+    }
+
+    .footer-widget ul li {
+        margin-bottom: 10px;
+    }
+
+    .contact-list li {
+        font-size: 14px;
+        gap: 10px;
+    }
+
+}
+
+
+/* =========================================
+   SMALL MOBILE
+========================================= */
+
+@media (max-width: 576px) {
+
+    .footer .container {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .footer-text {
+        font-size: 13px;
+    }
+
+    .footer-title {
+        font-size: 16px;
+    }
+
+    .footer-widget ul li {
+        font-size: 14px;
+    }
+
+    .contact-list li {
+        font-size: 13px;
+    }
+
+    .social-icons a {
+        width: 35px;
+        height: 35px;
+    }
+
+}
+</style>

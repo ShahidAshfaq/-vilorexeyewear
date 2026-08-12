@@ -103,7 +103,7 @@
                             @if(!empty($images))
 
                                 <img
-                                    src="{{ asset('storage/' . $images[0]) }}"
+                                    src="{{ asset('/storage/app/public/' . $images[0]) }}"
                                     width="65"
                                     height="65"
                                     class="rounded-3 border"

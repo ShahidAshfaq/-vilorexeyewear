@@ -86,19 +86,22 @@
 
                 <!-- Logo -->
 
-               <div class="col-lg-3 col-8">
-                <a href="{{ route('home') }}" class="logo d-flex align-items-center">
-                    @if($store?->logo)
-                        <img
-                            src="{{ asset('storage/app/public/' . $store->logo) }}"
-                            class="store-logo"
-                            alt="{{ $store->name }}"
-                        >
-                    @else
-                        <span>{{ $store->name }}</span>
-                    @endif
-                </a>
-            </div>
+        <div class="col-lg-3 col-8">
+    <a href="{{ route('home') }}"
+       class="logo d-flex align-items-center justify-content-center justify-content-lg-center">
+
+        @if($store?->logo)
+            <img
+                src="{{ asset('storage/app/public/' . $store->logo) }}"
+                class="store-logo img-fluid"
+                alt="{{ $store->name }}"
+            >
+        @else
+            <span>{{ $store->name }}</span>
+        @endif
+
+    </a>
+</div>
 
 
 
@@ -128,7 +131,7 @@
 
                 <!-- Icons -->
 
-                <div class="col-lg-3 col-2">
+                <div class="col-lg-3 col-2 d-flex align-items-center justify-content-center justify-content-lg-center">
 
                     <div class="header-icons">
 
@@ -220,76 +223,31 @@
 
     <!-- ================= NAVBAR ================= -->
 
-    <nav class="navbar-menu">
+    <nav class="navbar-menu" id="desktopNavbar">
+    <div class="container">
+        <ul>
+            <li>
+                <a href="{{ route('home') }}">Home</a>
+            </li>
 
-        <div class="container">
+            <li>
+                <a href="{{ route('user.about') }}">About</a>
+            </li>
 
-            <ul>
+            <li>
+                <a href="{{ route('product.index') }}">Products</a>
+            </li>
 
-                <li>
+            <li>
+                <a href="{{ route('user.contact') }}">Contact</a>
+            </li>
 
-                    <a href="{{ route('home') }}">
-
-                        Home
-
-                    </a>
-
-                </li>
-
-                <li>
-
-                    <a href="{{ route('user.about') }}">
-
-                        About
-
-                    </a>
-
-                </li>
-
-                <li>
-
-                    <a href="{{ route('product.index') }}">
-
-                        Products
-
-                    </a>
-
-                </li>
-
-                {{-- <li>
-
-                    <a href="{{ route('user.blog') }}">
-
-                        Blog
-
-                    </a>
-
-                </li> --}}
-
-                <li>
-
-                    <a href="{{ route('user.contact') }}">
-
-                        Contact
-
-                    </a>
-
-                </li>
-                <li>
-
-                    <a href="{{ route('order.track') }}">
-
-                        Order Track
-
-                    </a>
-
-                </li>
-
-            </ul>
-
-        </div>
-
-    </nav>
+            <li>
+                <a href="{{ route('order.track') }}">Order Track</a>
+            </li>
+        </ul>
+    </div>
+</nav>
 
 </header>
 
@@ -302,7 +260,17 @@
 
     <div class="offcanvas-header">
 
-        <h5>Store</h5>
+        <a href="{{ route('home') }}" class="logo d-flex align-items-center">
+                    @if($store?->logo)
+                        <img
+                            src="{{ asset('storage/app/public/' . $store->logo) }}"
+                            class="store-logo"
+                            alt="{{ $store->name }}"
+                        >
+                    @else
+                        <span>{{ $store->name }}</span>
+                    @endif
+                </a>
 
         <button class="btn-close" data-bs-dismiss="offcanvas">
         </button>
@@ -393,3 +361,57 @@
     </div>
 
 </div>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+    const navbar = document.getElementById('desktopNavbar');
+
+    if (!navbar) return;
+
+    let lastScroll = 0;
+    let navbarTop = navbar.offsetTop;
+
+    window.addEventListener('scroll', function () {
+
+        // Desktop only
+        if (window.innerWidth <= 991) {
+            navbar.classList.remove('navbar-fixed');
+            return;
+        }
+
+        const currentScroll =
+            window.pageYOffset || document.documentElement.scrollTop;
+
+        /* =========================
+           SCROLL DOWN
+        ========================= */
+        if (currentScroll > lastScroll) {
+
+            navbar.classList.remove('navbar-fixed');
+
+        }
+
+        /* =========================
+           SCROLL UP
+        ========================= */
+        else if (currentScroll < lastScroll) {
+
+            if (currentScroll > navbarTop) {
+                navbar.classList.add('navbar-fixed');
+            }
+
+        }
+
+        /* =========================
+           AT TOP
+        ========================= */
+        if (currentScroll <= 10) {
+            navbar.classList.remove('navbar-fixed');
+        }
+
+        lastScroll = currentScroll <= 0 ? 0 : currentScroll;
+
+    });
+
+});
+</script>

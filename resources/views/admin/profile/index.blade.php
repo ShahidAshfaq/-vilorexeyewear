@@ -620,8 +620,11 @@
 
                             </span>
 
+                            <a href="{{ route('setting.edit', $profile->id) }}"
+                            class="btn btn-sm btn-primary">
+                                <i class="fas fa-edit me-1"></i> Edit
+                            </a>
                         </div>
-
 
                         {{-- DESCRIPTION --}}
 
@@ -952,7 +955,7 @@
             </div>
 
         @endforelse
-
+        <a href="{{ route('setting.edit', $profile->id) }}">edit</a>
     </div>
 
 </div>

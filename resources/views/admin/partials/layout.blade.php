@@ -4,10 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  @php
-  $sitename = ' Amber Mart';
-
-  @endphp
+  
   <title>Dashboard</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
@@ -44,7 +41,7 @@
     <div class="d-flex align-items-center justify-content-between">
       <a href="{{Route('dashboard')}}" class="logo d-flex align-items-center">
         <img src="assets/img/logo.png" alt="">
-        <span class="d-none d-lg-block">{{$sitename}}</span>
+        <span class="d-none d-lg-block">{{ $store->name }}</span>
       </a>
       <i class="bi bi-list toggle-sidebar-btn"></i>
     </div><!-- End Logo -->
@@ -277,7 +274,7 @@
   <!-- ======= Footer ======= -->
   <footer id="footer" class="footer">
     <div class="copyright">
-      &copy; Copyright <strong><span>{{$sitename}}</span></strong>. All Rights Reserved
+      &copy; Copyright <strong><span>{{ $store->name }}</span></strong>. All Rights Reserved
     </div>
     <div class="credits">
      Designed by <a href="#">Shahid Developer</a>

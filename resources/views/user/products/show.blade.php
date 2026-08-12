@@ -165,13 +165,25 @@
 
                             </form>
 
-                            <button class="btn wishlist-detail">
+                            <button class="btn wishlist-detai">
+
+                                 <a href="{{ route('product.index') }}"
+                           class="continue-shopping">
+
+                            <i class="fas fa-arrow-left me-1"></i>
+                            Continue Shopping
+
+                        </a>
+
+                            </button>
+                            {{-- <button class="btn wishlist-detail">
 
                                 <i class="far fa-heart"></i>
 
                                 Wishlist
 
-                            </button>
+                            </button> --}}
+                           
 
                         </div>
 

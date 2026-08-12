@@ -50,7 +50,7 @@
 
                         <img
                             id="mainProductImage"
-                            src="{{ asset('storage/' . $images[0]) }}"
+                            src="{{ asset('/storage/app/public/' . $images[0]) }}"
                             class="img-fluid rounded-3"
                             style="width:100%; height:100%; object-fit:contain;"
                             alt="{{ $product->title }}"
@@ -69,11 +69,11 @@
                                 <button
                                     type="button"
                                     class="border rounded-3 bg-white p-1 w-100 image-thumb"
-                                    onclick="changeImage('{{ asset('storage/' . $image) }}')"
+                                    onclick="changeImage('{{ asset('/storage/app/public/' . $image) }}')"
                                 >
 
                                     <img
-                                        src="{{ asset('storage/' . $image) }}"
+                                        src="{{ asset('/storage/app/public/' . $image) }}"
                                         class="img-fluid rounded-2"
                                         style="height:80px;width:100%;object-fit:cover;"
                                         alt="{{ $product->title }}"

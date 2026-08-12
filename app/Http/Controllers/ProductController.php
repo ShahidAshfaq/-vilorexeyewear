@@ -28,17 +28,20 @@ class ProductController extends Controller
     $userProfile = UserProfile::latest()->first();
 
     // All categories
-    $categories = Category::all();
+    // $categories = Category::all();
 
     // Latest 9 categories
     $cat = Category::orderBy('created_at', 'desc')
-        ->take(9)
+        ->take(4)
+        ->get();
+
+    $categories = Category::take(4)
         ->get();
 
     // Latest 4 active products
     $products = Product::where('status', 1)
         ->orderBy('created_at', 'desc')
-        ->take(4)
+        ->take(3)
         ->get();
 
     return view('user.index', compact(

@@ -603,6 +603,45 @@
         </div>
 
     </section>
+    <!-- =========================================
+         BRAND VISION
+    ========================================== -->
+
+    <section class="vision-section border-bottom">
+
+        <div class="container">
+
+            <div class="vision-content" data-aos="fade-up">
+
+                <span class="section-eyebrow">
+                    Our Vision
+                </span>
+
+                <h2>
+                    Clear Vision. Confident Style.
+                </h2>
+
+                <p>
+                    Our vision is to make quality eyewear accessible
+                    and enjoyable for everyone. Whether you're looking
+                    for everyday glasses, stylish frames or lenses
+                    suited to your lifestyle, we're here to help you
+                    find the right fit.
+                </p>
+
+                <a
+                    href="{{ route('product.index') }}"
+                    class="vision-btn"
+                >
+                    Shop Eyewear
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
 
 
     <!-- =========================================
@@ -613,7 +652,7 @@
 
         <div class="container">
 
-            <div class="section-heading" data-aos="fade-up">
+            <div class="section-headin text-center" data-aos="fade-up">
 
                 <span class="section-eyebrow">
                     Why Shop With Us
@@ -808,45 +847,7 @@
     </section>
 
 
-    <!-- =========================================
-         BRAND VISION
-    ========================================== -->
-
-    <section class="vision-section">
-
-        <div class="container">
-
-            <div class="vision-content" data-aos="fade-up">
-
-                <span class="section-eyebrow">
-                    Our Vision
-                </span>
-
-                <h2>
-                    Clear Vision. Confident Style.
-                </h2>
-
-                <p>
-                    Our vision is to make quality eyewear accessible
-                    and enjoyable for everyone. Whether you're looking
-                    for everyday glasses, stylish frames or lenses
-                    suited to your lifestyle, we're here to help you
-                    find the right fit.
-                </p>
-
-                <a
-                    href="{{ route('product.index') }}"
-                    class="vision-btn"
-                >
-                    Shop Eyewear
-                    <i class="fas fa-arrow-right"></i>
-                </a>
-
-            </div>
-
-        </div>
-
-    </section>
+    
 
 
 </div>

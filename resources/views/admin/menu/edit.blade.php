@@ -227,7 +227,7 @@
                             Select Brand
                         </option>
 
-                        {{-- 
+                        
                         @foreach($brands as $brand)
 
                             <option
@@ -238,7 +238,7 @@
                             </option>
 
                         @endforeach
-                        --}}
+                       
 
                     </select>
 
@@ -548,7 +548,7 @@
                         <div class="border rounded-3 p-1">
 
                             <img
-                                src="{{ asset('storage/' . $image) }}"
+                                src="{{ asset('/storage/app/public/' . $image) }}"
                                 width="120"
                                 height="120"
                                 class="rounded-2"

@@ -99,7 +99,7 @@
 
             {{-- LEFT CONTENT --}}
 
-            <div class="col-lg-6 pt-3">
+            <div class="col-lg-6 pt-3 text-center">
 
                 <span class="hero-badge">
 
@@ -142,7 +142,7 @@
                 </div>
 
 
-                <div class="row text-center mt-5 g-3">
+                {{-- <div class="row text-center mt-5 g-3">
 
                     <div class="col-12 col-sm-6 col-md-4">
 
@@ -164,7 +164,7 @@
 
                     </div>
 
-                </div>
+                </div> --}}
 
             </div>
 
@@ -1181,7 +1181,7 @@
 
     </section>
 
-    <section class="newsletter">
+    {{-- <section class="newsletter">
 
         <div class="container">
 
@@ -1225,5 +1225,5 @@
 
         </div>
 
-    </section>
+    </section> --}}
 @endsection

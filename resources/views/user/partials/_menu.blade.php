@@ -148,7 +148,7 @@
 
                     {{-- Category --}}
 
-                    @if ($categoryName)
+                    {{-- @if ($categoryName)
                         <span class="product-category">
 
                             <i class="fas fa-glasses me-1"></i>
@@ -160,7 +160,7 @@
                         <span class="product-category">
                             Eyewear
                         </span>
-                    @endif
+                    @endif --}}
 
 
                     {{-- Product Name --}}
@@ -180,7 +180,7 @@
                      PRODUCT ATTRIBUTES
                 ======================================= --}}
 
-                    <div class="product-meta mb-2">
+                    {{-- <div class="product-meta mb-2">
 
                         @if ($product->frame)
                             <span class="badge bg-light text-dark border">
@@ -208,14 +208,14 @@
                             </span>
                         @endif
 
-                    </div>
+                    </div> --}}
 
 
                     {{-- ======================================
                      RATING
                 ======================================= --}}
 
-                    <div class="rating">
+                    {{-- <div class="rating">
 
                         <i class="fas fa-star"></i>
 
@@ -229,7 +229,7 @@
 
                         <span>(24)</span>
 
-                    </div>
+                    </div> --}}
 
 
                     {{-- ======================================
@@ -339,7 +339,6 @@
             </div>
 
         </div>
-        
     @endforeach
 </div>
 

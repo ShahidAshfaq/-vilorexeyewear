@@ -463,20 +463,11 @@ TOP BAR
 HEADER
 ======================================*/
 
-#header{
-
-    position:sticky;
-
-    top:0;
-
-    width:100%;
-
-    z-index:999;
-
-    background:#fff;
-
-    box-shadow:0 3px 15px rgba(0,0,0,.05);
-
+#header {
+    position: relative;
+    width: 100%;
+    z-index: 999;
+    background: #fff;
 }
 
 .main-header{
@@ -489,7 +480,7 @@ HEADER
 
 .logo{
 
-    font-size:38px;
+    font-size:30px;
 
     font-family:'Cormorant Garamond',serif;
 
@@ -514,6 +505,8 @@ SEARCH BOX
 .search-box{
 
     display:flex;
+
+    justify-content: center !important;
 
     align-items:center;
 
@@ -639,10 +632,18 @@ HEADER ICONS
 NAVIGATION
 ======================================*/
 
-.navbar-menu{
-
-    background:var(--secondary);
-
+.navbar-menu {
+    background: var(--secondary);
+    width: 100%;
+    transition: all .3s ease;
+}
+.navbar-menu.navbar-fixed {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 9999;
+    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.15);
 }
 
 .navbar-menu ul{
@@ -877,9 +878,9 @@ RESPONSIVE
 
     .logo{
 
-        text-align:center;
+        /* text-align:center; */
 
-        display:block;
+        /* display:block; */
 
         font-size:34px;
 
@@ -2981,7 +2982,7 @@ font-size:14px;
 PRODUCT DETAILS
 =========================================*/
 
-:root{
+/* :root{
     --primary:#C8A56A;
     --primary-dark:#A67C3D;
     --black:#111111;
@@ -2989,7 +2990,7 @@ PRODUCT DETAILS
     --white:#ffffff;
     --gray:#777777;
     --border:#E8E2D8;
-}
+} */
 
 .product-details{
     background:var(--cream);
@@ -4970,8 +4971,8 @@ border-color:#C8A56A;
     }
 
     .store-logo {
-    width: 200px;
-    height: 80px;
+    width: 150px;
+    height: 60px;
     /* width: auto; */
     object-fit: contain;
     display: block;
