@@ -5,13 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>@yield('title', 'Store')</title>
+    <title>@yield('title', 'Velorix ')</title>
 
-    <meta name="description" content="@yield('description','Premium Online Store')">
+    <meta name="description" content="@yield('description','{{ $store->description }}')">
     <meta name="keywords" content="ecommerce, store, shopping">
 
     <!-- Favicon -->
-    <link rel="icon" href="{{ asset('user/assets/img/favicon.png') }}">
+    <link rel="icon" href="{{ asset('storage/app/public/' . $store->logo) }} }}">
 
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
@@ -49,7 +49,7 @@
             PAGE CONTENT
     =========================== -->
     <main>
-
+        
         @yield('content')
 
     </main>
