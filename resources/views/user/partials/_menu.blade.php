@@ -1,169 +1,204 @@
 <div class="row g-4">
 
     @foreach ($products as $product)
+
         @php
             $images = json_decode($product->image, true);
             $firstImage = $images[0] ?? 'default-product.jpg';
 
-            // Category
-            $categoryName = $categories->firstWhere('id', $product->category_id)?->name;
-
-            // Sale
             $isOnSale = $product->on_sale && $product->sale_price;
 
-            // Stock
             $outOfStock = $product->stock <= 0;
         @endphp
 
-
         <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
 
-            <div class="product-card position-relative">
+            <div class="hover-product-card">
 
-
-                {{-- ==========================================
-                 SALE BADGE
-            =========================================== --}}
-
-                @if ($isOnSale)
-                    <span class="sale-badge">
-
-                        <i class="fas fa-fire me-1"></i>
-
-                        Sale
-
-                    </span>
-                @endif
-
-
-                {{-- ==========================================
-                 OUT OF STOCK BADGE
-            =========================================== --}}
-
-                @if ($outOfStock)
-                    <span class="stock-badge position-absolute"
-                        style="
-                        top: 45px;
-                        left: 15px;
-                        z-index: 5;
-                        background:#dc3545;
-                        color:white;
-                        padding:5px 10px;
-                        border-radius:4px;
-                        font-size:12px;
-                    ">
-
-                        Out of Stock
-
-                    </span>
-                @endif
-
-
-                {{-- ==========================================
-                 WISHLIST
-            =========================================== --}}
-
-                <button class="wishlist-btn" data-product="{{ $product->id }}">
-
-                    <i class="far fa-heart"></i>
-
-                </button>
-
-
-                {{-- ==========================================
-                 PRODUCT IMAGE
-            =========================================== --}}
-
-                <div class="product-image-wrapper">
+                {{-- ================= IMAGE ================= --}}
+                <div class="hover-product-image">
 
                     <a href="{{ route('product.show', $product->id) }}">
 
-                        <img src="{{ asset('/storage/app/public/' . $firstImage) }}" class="product-img"
-                            alt="{{ $product->title }}">
+                        <img
+                            src="{{ asset('/storage/app/public/' . $firstImage) }}"
+                            alt="{{ $product->title }}"
+                        >
 
                     </a>
 
 
-                    {{-- Hover Actions --}}
+                    {{-- SALE --}}
+                    @if ($isOnSale)
 
-                    <div class="product-actions">
+                        <span class="hover-sale-badge">
+                            <i class="fas fa-fire"></i>
+                            Sale
+                        </span>
 
-                        {{-- View --}}
-
-                        <a href="{{ route('product.show', $product->id) }}" class="action-btn" title="View Product">
-
-                            <i class="far fa-eye"></i>
-
-                        </a>
+                    @endif
 
 
-                        {{-- Add To Cart --}}
+                    {{-- OUT OF STOCK --}}
+                    @if ($outOfStock)
 
-                        @if (!$outOfStock)
-                            <form action="{{ route('cart.add', $product->id) }}" method="POST" style="display:inline;">
+                        <span class="hover-stock-badge">
+                            Out of Stock
+                        </span>
 
-                                @csrf
+                    @endif
 
-                                <input type="hidden" name="quantity" value="1">
 
-                                <button type="submit" class="action-btn"
-                                    style="
-                                    border:none;
-                                    background:none;
-                                    padding:0;
-                                "
-                                    title="Add to Cart">
+                    {{-- WISHLIST --}}
+                    <button
+                        class="hover-wishlist"
+                        data-product="{{ $product->id }}"
+                    >
 
-                                    <i class="fas fa-shopping-bag"></i>
+                        <i class="far fa-heart"></i>
 
-                                </button>
+                    </button>
 
-                            </form>
-                        @else
-                            <button type="button" class="action-btn" disabled
-                                style="
-                                border:none;
-                                background:none;
-                                padding:0;
-                                opacity:.5;
-                            "
-                                title="Out of Stock">
 
-                                <i class="fas fa-ban"></i>
+                    {{-- ================= HOVER DETAILS ================= --}}
+                    <div class="hover-product-overlay">
 
-                            </button>
-                        @endif
+                        <div class="hover-product-content">
+
+                            {{-- Product Name --}}
+
+                            <h3>
+                                {{ Str::limit($product->title, 35) }}
+                            </h3>
+
+
+                            {{-- Price --}}
+
+                            <div class="hover-price">
+
+                                @if ($isOnSale)
+
+                                    <span class="sale-price">
+                                        Rs {{ number_format($product->sale_price) }}
+                                    </span>
+
+                                    <span class="original-price">
+                                        Rs {{ number_format($product->price) }}
+                                    </span>
+
+                                @else
+
+                                    <span class="normal-price">
+                                        Rs {{ number_format($product->price) }}
+                                    </span>
+
+                                @endif
+
+                            </div>
+
+
+                            {{-- Stock --}}
+
+                            <div class="hover-stock">
+
+                                @if ($outOfStock)
+
+                                    <span class="stock-out">
+                                        <i class="fas fa-times-circle"></i>
+                                        Out of Stock
+                                    </span>
+
+                                @elseif ($product->stock <= 5)
+
+                                    <span class="stock-low">
+                                        <i class="fas fa-exclamation-circle"></i>
+                                        Only {{ $product->stock }} left
+                                    </span>
+
+                                @else
+
+                                    <span class="stock-in">
+                                        <i class="fas fa-check-circle"></i>
+                                        In Stock
+                                    </span>
+
+                                @endif
+
+                            </div>
+
+
+                            {{-- ================= ACTIONS ================= --}}
+
+                            <div class="hover-actions">
+
+                                {{-- VIEW --}}
+
+                                <a
+                                    href="{{ route('product.show', $product->id) }}"
+                                    class="hover-action-btn"
+                                    title="View Product"
+                                >
+
+                                    <i class="far fa-eye"></i>
+
+                                </a>
+
+
+                                {{-- CART --}}
+
+                                @if (!$outOfStock)
+
+                                    <form
+                                        action="{{ route('cart.add', $product->id) }}"
+                                        method="POST"
+                                    >
+
+                                        @csrf
+
+                                        <input
+                                            type="hidden"
+                                            name="quantity"
+                                            value="1"
+                                        >
+
+                                        <button
+                                            type="submit"
+                                            class="hover-action-btn"
+                                            title="Add to Cart"
+                                        >
+
+                                            <i class="fas fa-shopping-cart"></i>
+
+                                        </button>
+
+                                    </form>
+
+                                @else
+
+                                    <button
+                                        type="button"
+                                        class="hover-action-btn disabled"
+                                        disabled
+                                    >
+
+                                        <i class="fas fa-ban"></i>
+
+                                    </button>
+
+                                @endif
+
+                            </div>
+
+                        </div>
 
                     </div>
 
                 </div>
 
 
-                {{-- ==========================================
-                 PRODUCT INFO
-            =========================================== --}}
+                {{-- ================= BASIC INFO ================= --}}
 
-                <div class="product-body">
-
-
-                    {{-- Category --}}
-
-                    {{-- @if ($categoryName)
-                        <span class="product-category">
-
-                            <i class="fas fa-glasses me-1"></i>
-
-                            {{ $categoryName }}
-
-                        </span>
-                    @else
-                        <span class="product-category">
-                            Eyewear
-                        </span>
-                    @endif --}}
-
-
-                    {{-- Product Name --}}
+                <div class="hover-product-footer">
 
                     <h5>
 
@@ -176,199 +211,435 @@
                     </h5>
 
 
-                    {{-- ======================================
-                     PRODUCT ATTRIBUTES
-                ======================================= --}}
-
-                    {{-- <div class="product-meta mb-2">
-
-                        @if ($product->frame)
-                            <span class="badge bg-light text-dark border">
-
-                                {{ $product->frame }}
-
-                            </span>
-                        @endif
-
-
-                        @if ($product->lens)
-                            <span class="badge bg-light text-dark border">
-
-                                {{ $product->lens }}
-
-                            </span>
-                        @endif
-
-
-                        @if ($product->gender)
-                            <span class="badge bg-light text-dark border">
-
-                                {{ $product->gender }}
-
-                            </span>
-                        @endif
-
-                    </div> --}}
-
-
-                    {{-- ======================================
-                     RATING
-                ======================================= --}}
-
-                    {{-- <div class="rating">
-
-                        <i class="fas fa-star"></i>
-
-                        <i class="fas fa-star"></i>
-
-                        <i class="fas fa-star"></i>
-
-                        <i class="fas fa-star"></i>
-
-                        <i class="fas fa-star-half-alt"></i>
-
-                        <span>(24)</span>
-
-                    </div> --}}
-
-
-                    {{-- ======================================
-                     PRICE
-                ======================================= --}}
-
-                    <div class="price-area">
-
+                    <div class="footer-price">
 
                         @if ($isOnSale)
-                            {{-- Sale Price --}}
 
-                            <span class="price text-danger">
-
+                            <span>
                                 Rs {{ number_format($product->sale_price) }}
-
                             </span>
 
-
-                            {{-- Original Price --}}
-
-                            <span class="old-price">
-
+                            <del>
                                 Rs {{ number_format($product->price) }}
+                            </del>
 
-                            </span>
                         @else
-                            {{-- Normal Price --}}
 
-                            <span class="price">
-
+                            <span>
                                 Rs {{ number_format($product->price) }}
-
                             </span>
+
                         @endif
 
                     </div>
-
-
-                    {{-- ======================================
-                     STOCK
-                ======================================= --}}
-
-                    <div class="mb-2">
-
-                        @if ($outOfStock)
-                            <small class="text-danger fw-semibold">
-
-                                <i class="fas fa-times-circle me-1"></i>
-
-                                Out of Stock
-
-                            </small>
-                        @elseif ($product->stock <= 5)
-                            <small class="text-warning fw-semibold">
-
-                                <i class="fas fa-exclamation-circle me-1"></i>
-
-                                Only {{ $product->stock }} left
-
-                            </small>
-                        @else
-                            <small class="text-success">
-
-                                <i class="fas fa-check-circle me-1"></i>
-
-                                In Stock
-
-                            </small>
-                        @endif
-
-                    </div>
-
-
-                    {{-- ======================================
-                     ADD TO CART BUTTON
-                ======================================= --}}
-
-                    @if ($outOfStock)
-                        <button type="button" class="btn btn-secondary w-100" disabled>
-
-                            <i class="fas fa-times-circle me-2"></i>
-
-                            Out of Stock
-
-                        </button>
-                    @else
-                        <form action="{{ route('cart.add', $product->id) }}" method="POST">
-
-                            @csrf
-
-                            <input type="hidden" name="quantity" value="1">
-
-                            <button type="submit" class="btn btn-primary w-100">
-
-                                <i class="fas fa-shopping-cart me-2"></i>
-
-                                Add to Cart
-
-                            </button>
-
-                        </form>
-                    @endif
 
                 </div>
 
             </div>
 
         </div>
+
     @endforeach
+
 </div>
 
-<!-- Quick View Modal -->
-<div class="modal fade" id="quickViewModal" tabindex="-1">
-    <div class="modal-dialog modal-xl modal-dialog-centered">
-        <div class="modal-content border-0 rounded-4">
+<style>
+    /* ==========================================
+   HOVER PRODUCT CARD
+========================================== */
 
-            <div class="modal-header border-0">
-                <h5 class="modal-title">Product Details</h5>
+.hover-product-card {
+    position: relative;
+    background: #fff;
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    transition: all .35s ease;
+}
 
-                <button class="btn-close" data-bs-dismiss="modal">
-                </button>
+.hover-product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, .12);
+}
 
-            </div>
 
-            <div class="modal-body">
+/* ==========================================
+   IMAGE
+========================================== */
 
-                <div id="quickViewContent">
+.hover-product-image {
+    position: relative;
+    height: 280px;
+    overflow: hidden;
+    background: #f5f5f5;
+}
 
-                    <div class="text-center py-5">
+.hover-product-image > a {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
 
-                        <div class="spinner-border text-warning"></div>
+.hover-product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
 
-                    </div>
+    transition: transform .5s ease;
+}
 
-                </div>
+.hover-product-card:hover .hover-product-image img {
+    transform: scale(1.08);
+}
 
-            </div>
 
-        </div>
-    </div>
-</div>
+/* ==========================================
+   OVERLAY
+========================================== */
+
+.hover-product-overlay {
+    position: absolute;
+
+    inset: 0;
+
+    display: flex;
+    align-items: flex-end;
+
+    background: linear-gradient(
+        to top,
+        rgba(0, 0, 0, .85),
+        rgba(0, 0, 0, .35),
+        transparent
+    );
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    transition: all .35s ease;
+}
+
+.hover-product-card:hover .hover-product-overlay {
+    opacity: 1;
+    visibility: visible;
+}
+
+
+/* ==========================================
+   HOVER CONTENT
+========================================== */
+
+.hover-product-content {
+    width: 100%;
+    padding: 25px 20px 20px;
+
+    color: #fff;
+
+    transform: translateY(25px);
+
+    transition: transform .35s ease;
+}
+
+.hover-product-card:hover .hover-product-content {
+    transform: translateY(0);
+}
+
+
+.hover-product-content h3 {
+    margin: 0 0 8px;
+
+    font-size: 18px;
+    font-weight: 600;
+
+    color: #fff;
+}
+
+
+/* ==========================================
+   PRICE
+========================================== */
+
+.hover-price {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    margin-bottom: 8px;
+}
+
+.sale-price,
+.normal-price {
+    font-size: 19px;
+    font-weight: 700;
+    color: #fff;
+}
+
+.original-price {
+    font-size: 13px;
+    color: rgba(255,255,255,.7);
+    text-decoration: line-through;
+}
+
+
+/* ==========================================
+   STOCK
+========================================== */
+
+.hover-stock {
+    margin-bottom: 14px;
+
+    font-size: 12px;
+}
+
+.stock-in {
+    color: #72e6a0;
+}
+
+.stock-low {
+    color: #ffd166;
+}
+
+.stock-out {
+    color: #ff7b7b;
+}
+
+
+/* ==========================================
+   ACTION BUTTONS
+========================================== */
+
+.hover-actions {
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+}
+
+.hover-actions form {
+    margin: 0;
+}
+
+.hover-action-btn {
+    width: 38px;
+    height: 38px;
+
+    border: none;
+    border-radius: 50%;
+
+    background: #fff;
+    color: var(--secondary);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    text-decoration: none;
+
+    font-size: 14px;
+
+    cursor: pointer;
+
+    transition: all .25s ease;
+}
+
+.hover-action-btn:hover {
+    background: var(--primary);
+    color: #fff;
+
+    transform: translateY(-2px);
+}
+
+.hover-action-btn.disabled {
+    opacity: .5;
+    cursor: not-allowed;
+}
+
+
+/* ==========================================
+   SALE BADGE
+========================================== */
+
+.hover-sale-badge {
+    position: absolute;
+
+    top: 14px;
+    left: 14px;
+
+    z-index: 5;
+
+    background: var(--primary);
+    color: #fff;
+
+    padding: 5px 10px;
+
+    border-radius: 5px;
+
+    font-size: 11px;
+    font-weight: 600;
+}
+
+
+/* ==========================================
+   OUT OF STOCK
+========================================== */
+
+.hover-stock-badge {
+    position: absolute;
+
+    top: 48px;
+    left: 14px;
+
+    z-index: 5;
+
+    background: #dc3545;
+    color: #fff;
+
+    padding: 5px 9px;
+
+    border-radius: 5px;
+
+    font-size: 10px;
+    font-weight: 600;
+}
+
+
+/* ==========================================
+   WISHLIST
+========================================== */
+
+.hover-wishlist {
+    position: absolute;
+
+    top: 14px;
+    right: 14px;
+
+    z-index: 10;
+
+    width: 35px;
+    height: 35px;
+
+    border: none;
+    border-radius: 50%;
+
+    background: #fff;
+
+    color: var(--secondary);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+
+    box-shadow: 0 3px 10px rgba(0,0,0,.12);
+
+    transition: all .25s ease;
+}
+
+.hover-wishlist:hover {
+    color: var(--primary);
+    transform: scale(1.1);
+}
+
+
+/* ==========================================
+   FOOTER
+========================================== */
+
+.hover-product-footer {
+    padding: 14px 15px;
+}
+
+.hover-product-footer h5 {
+    margin: 0 0 6px;
+
+    font-size: 15px;
+    font-weight: 600;
+
+    line-height: 1.4;
+}
+
+.hover-product-footer h5 a {
+    color: var(--secondary);
+    text-decoration: none;
+
+    transition: .25s;
+}
+
+.hover-product-footer h5 a:hover {
+    color: var(--primary);
+}
+
+
+/* ==========================================
+   FOOTER PRICE
+========================================== */
+
+.footer-price {
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+}
+
+.footer-price span {
+    font-size: 16px;
+    font-weight: 700;
+
+    color: var(--primary);
+}
+
+.footer-price del {
+    font-size: 12px;
+    color: #999;
+}
+
+
+/* ==========================================
+   RESPONSIVE
+========================================== */
+
+@media (max-width: 991px) {
+
+    .hover-product-image {
+        height: 250px;
+    }
+
+}
+
+
+@media (max-width: 767px) {
+
+    .hover-product-image {
+        height: 230px;
+    }
+
+    .hover-product-content {
+        padding: 20px 15px 15px;
+    }
+
+    .hover-product-content h3 {
+        font-size: 16px;
+    }
+
+}
+
+
+@media (max-width: 576px) {
+
+    .hover-product-image {
+        height: 200px;
+    }
+
+    .hover-product-footer {
+        padding: 12px;
+    }
+
+    .hover-product-footer h5 {
+        font-size: 14px;
+    }
+
+}
+</style>

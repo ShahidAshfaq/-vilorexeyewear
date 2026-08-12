@@ -95,14 +95,14 @@
 
                             <span class="current-price">
 
-                                Rs {{ number_format($product->sale_price) }}
+                                Rs {{ number_format($product->price) }}
 
                             </span>
 
-                            @if ($product->price)
+                            @if ($product->cut_price)
                                 <span class="old-price">
 
-                                    Rs {{ number_format($product->price) }}
+                                    Rs {{ number_format($product->cut_price) }}
 
                                 </span>
                             @endif

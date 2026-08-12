@@ -83,7 +83,7 @@
         $product = $item->product;
 
         $name = $product->title ?? 'Product';
-        $price = $product->price ?? 0;
+        $price = $product->sale_price ?? 0;
         $quantity = $item->quantity;
 
         // Decode JSON images
@@ -96,13 +96,13 @@
     <li class="list-group-item px-0">
 
         <div class="d-flex align-items-center">
-
+{{-- 
             @if($image)
                 <img src="{{ asset('/storage/app/public/' . $image) }}"
                      alt="{{ $name }}"
                      class="rounded me-3"
-                     width="30"
-                     height="60"
+                     width="60px"
+                     height="60px"
                      style="object-fit: cover;">
             @else
                 <img src="{{ asset('user/assets/img/default.png') }}"
@@ -111,7 +111,7 @@
                      width="60"
                      height="60"
                      style="object-fit: cover;">
-            @endif
+            @endif --}}
 
             <div class="flex-grow-1">
 

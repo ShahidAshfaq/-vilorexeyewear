@@ -19,7 +19,11 @@ class CheckoutController extends Controller
         $cartItems = Cart::where('session_id', $session_id)->with('product')->get();
 
         // Calculate total
-        $total = $cartItems->sum(fn($item) => $item->product->price * $item->quantity);
+            $total = 0;
+
+        foreach ($cartItems as $item) {
+            $total += $item->product->sale_price * $item->quantity;
+        }
 
         $discount = session('coupon.discount', 0);
         $grandTotal = $total - $discount;
@@ -57,7 +61,7 @@ class CheckoutController extends Controller
     }
 
     $subtotal = $cartItems->sum(function ($item) {
-        return $item->product->price * $item->quantity;
+        return $item->product->sale_price * $item->quantity;
     });
 
     $discount = session('coupon.discount', 0);
@@ -68,7 +72,7 @@ class CheckoutController extends Controller
         return [
             'product_id' => $item->product->id,
             'name' => $item->product->title,
-            'price' => $item->product->price,
+            'price' => $item->product->sale_price,
             'quantity' => $item->quantity,
         ];
     })->toArray();

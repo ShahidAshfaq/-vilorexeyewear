@@ -12,7 +12,7 @@
                     <h2 class="footer-logo">
 
                         <a href="{{ route('home') }}"
-                            class="logo d-flex align-items-center justify-content-center justify-content-lg-center">
+                            class="logo d-flex align-items-left justify-content-left justify-content-lg-ledt">
 
                             @if ($store?->logo)
 
@@ -156,7 +156,7 @@
             {{-- ================= SUPPORT ================= --}}
             <div class="col-lg-2 col-md-6 col-6">
 
-                <div class="footer-widget">
+                <div class="footer-widget ">
 
                     <h4 class="footer-title">
                         Support
@@ -198,77 +198,74 @@
             {{-- ================= CONTACT ================= --}}
             <div class="col-lg-4 col-md-6 col-12">
 
-                <div class="footer-widget">
+    <div class="footer-widget">
 
-                    <h4 class="footer-title">
-                        Contact Information
-                    </h4>
+        <h4 class="footer-title">
+            Contact Information
+        </h4>
 
+        <ul class="contact-list">
 
-                    <ul class="contact-list">
+            @if ($store)
 
-                        @if ($store)
+                {{-- ADDRESS --}}
+                @if ($store->address)
 
-                            {{-- ADDRESS --}}
-                            @if ($store->address)
+                    <li>
 
-                                <li>
+                        <i class="fas fa-map-marker-alt"></i>
 
-                                    <i class="fas fa-map-marker-alt"></i>
+                        <span>
+                            {{ $store->address }}
 
-                                    <span>
-
-                                        {{ $store->address }}
-
-                                        @if ($store->city)
-                                            , {{ $store->city }}
-                                        @endif
-
-                                    </span>
-
-                                </li>
-
+                            @if ($store->city)
+                                , {{ $store->city }}
                             @endif
+                        </span>
+
+                    </li>
+
+                @endif
 
 
-                            {{-- PHONE --}}
-                            @if ($store->phone)
+                {{-- PHONE --}}
+                @if ($store->phone)
 
-                                <li>
+                    <li>
 
-                                    <i class="fas fa-phone"></i>
+                        <i class="fas fa-phone"></i>
 
-                                    <span>
-                                        {{ $store->phone }}
-                                    </span>
+                        <span>
+                            {{ $store->phone }}
+                        </span>
 
-                                </li>
+                    </li>
 
-                            @endif
+                @endif
 
 
-                            {{-- EMAIL --}}
-                            @if ($store->email)
+                {{-- EMAIL --}}
+                @if ($store->email)
 
-                                <li>
+                    <li>
 
-                                    <i class="fas fa-envelope"></i>
+                        <i class="fas fa-envelope"></i>
 
-                                    <span>
-                                        {{ $store->email }}
-                                    </span>
+                        <span>
+                            {{ $store->email }}
+                        </span>
 
-                                </li>
+                    </li>
 
-                            @endif
+                @endif
 
-                        @endif
+            @endif
 
-                    </ul>
+        </ul>
 
-                </div>
+    </div>
 
-            </div>
+</div>
 
         </div>
 
@@ -279,7 +276,29 @@
     /* =========================================
    FOOTER RESPONSIVE
 ========================================= */
+.contact-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
 
+.contact-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+.contact-list li i {
+    width: 20px;
+    min-width: 20px;
+    margin-top: 4px;
+    color: var(--primary);
+}
+
+.contact-list li span {
+    line-height: 1.6;
+}
 .footer {
     overflow: hidden;
 }

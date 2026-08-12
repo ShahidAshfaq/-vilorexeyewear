@@ -57,13 +57,21 @@ class CartController extends Controller
 
     // Show cart
     public function index()
-    {
-        $sessionId = Session::getId();
-        $cartItems = Cart::where('session_id', $sessionId)->with('product')->get();
-        $total = $cartItems->sum(fn($item) => $item->price * $item->quantity);
+{
+    $sessionId = Session::getId();
 
-        return view('user.cart.cart', compact('cartItems','total'));
+    $cartItems = Cart::where('session_id', $sessionId)
+        ->with('product')
+        ->get();
+
+    $total = 0;
+
+    foreach ($cartItems as $item) {
+        $total += $item->product->sale_price * $item->quantity;
     }
+
+    return view('user.cart.cart', compact('cartItems', 'total'));
+}
 
     // Update cart quantity
     public function update(Request $request, $id)

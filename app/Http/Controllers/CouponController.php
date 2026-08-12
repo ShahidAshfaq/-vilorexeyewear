@@ -82,10 +82,10 @@ class CouponController extends Controller
 
         return back()->with('success','Coupon Deleted');
     }
-    public function apply(Request $request)
+  public function apply(Request $request)
 {
     $request->validate([
-        'coupon_code' => 'required|string',
+        'coupon_code' => 'required',
     ]);
 
     $coupon = Coupon::where('code', $request->coupon_code)
@@ -96,28 +96,41 @@ class CouponController extends Controller
         return back()->with('error', 'Invalid or expired coupon.');
     }
 
-    // Get cart total
+    // Get cart items
     $sessionId = session()->getId();
 
-    $cartTotal = \App\Models\Cart::where('session_id', $sessionId)
-        ->sum(\DB::raw('price * quantity'));
+    $cartItems = \App\Models\Cart::where('session_id', $sessionId)
+        ->with('product')
+        ->get();
+
+    // Calculate cart total from products table
+    $cartTotal = $cartItems->sum(function ($item) {
+        return $item->product->sale_price * $item->quantity;
+    });
 
     // Check minimum order amount
     if ($cartTotal < $coupon->minimum_amount) {
         return back()->with(
             'error',
-            'Minimum order amount is Rs. ' . number_format($coupon->minimum_amount)
+            'Minimum order amount is Rs. ' .
+            number_format($coupon->minimum_amount)
         );
     }
 
     // Calculate discount
     if ($coupon->type == 'percentage') {
+
         $discount = ($cartTotal * $coupon->value) / 100;
 
-        if ($coupon->maximum_discount && $discount > $coupon->maximum_discount) {
+        if (
+            $coupon->maximum_discount &&
+            $discount > $coupon->maximum_discount
+        ) {
             $discount = $coupon->maximum_discount;
         }
+
     } else {
+
         $discount = $coupon->value;
     }
 

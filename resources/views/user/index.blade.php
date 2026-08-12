@@ -916,14 +916,14 @@
 
                     <div class="mt-5">
 
-                        <a href="{{ route('product.index') }}" class="btn btn-dark btn-lg rounded-pill px-5">
+                        <a href="{{ route('product.index') }}" class="btn btn-dark btn-lg mt-2 rounded-pill px-5">
 
                             Shop Now
 
                         </a>
 
                         <a href="{{ route('product.index') }}"
-                            class="btn btn-outline-dark btn-lg rounded-pill px-5 ms-2">
+                            class="btn btn-outline-dark btn-lg mt-2 rounded-pill px-5 ms-2">
 
                             View Deals
 
@@ -939,7 +939,7 @@
 
     </section>
 
-    <section class="brands py-5 bg-white">
+    <section class="brands  bg-white">
 
         <div class="container">
 

@@ -955,7 +955,7 @@
             </div>
 
         @endforelse
-        <a href="{{ route('setting.edit', $profile->id) }}">edit</a>
+        {{-- <a href="{{ route('setting.edit', $profile->id) }}">edit</a> --}}
     </div>
 
 </div>

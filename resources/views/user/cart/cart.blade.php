@@ -106,15 +106,31 @@
                                 Rs. {{ number_format($item->price) }}
 
                             </div>
+{{-- 
+                            <div class="price-area">
 
+                            <span class="current-price">
 
+                                Rs {{ number_format($item->sale_price) }}
+
+                            </span>
+
+                            @if ($item->price)
+                                <span class="old-price">
+
+                                    Rs {{ number_format($item->price) }}
+
+                                </span>
+                            @endif
+
+                        </div> --}}
                             <!-- MOBILE PRICE -->
 
                             <div class="mobile-subtotal">
 
                                 Subtotal:
                                 <strong>
-                                    Rs. {{ number_format($item->price * $item->quantity) }}
+                                    Rs. {{ number_format($item->sale_price * $item->quantity) }}
                                 </strong>
 
                             </div>
@@ -169,10 +185,10 @@
                             <small>
                                 Subtotal
                             </small>
-
+{{-- @dd($item->product->sale_price) --}}
                             <strong>
                                 Rs.
-                                {{ number_format($item->price * $item->quantity) }}
+                                {{ number_format($item->product->sale_price * $item->quantity) }}
                             </strong>
 
                         </div>

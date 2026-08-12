@@ -476,7 +476,7 @@
                     <div class="about-hero-image">
 
                         <img
-                            src="{{ asset('user/assets/img/about.jpg') }}"
+                            src="{{ asset('user/assets/img/about2.jpeg') }}"
                             alt="Premium Eyewear Collection"
                         >
 
@@ -553,7 +553,7 @@
                     <div class="story-image">
 
                         <img
-                            src="{{ asset('user/assets/img/about.jpg') }}"
+                            src="{{ asset('user/assets/img/about1.jpeg') }}"
                             alt="Our Eyewear Story"
                         >
 

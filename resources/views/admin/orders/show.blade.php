@@ -132,13 +132,17 @@
                 @endif
 
                 <hr>
-
+                {{-- @php
+                    $grand =   $subtotal - $order->discount;
+                    dd($grand);
+                    
+                @endphp --}}
                 <div class="d-flex justify-content-between fs-5">
 
                     <strong>Grand Total</strong>
 
                     <strong>
-                        Rs. {{ number_format($order->total) }}
+                        Rs. {{ number_format($subtotal - $order->discount) }}
                     </strong>
 
                 </div>
