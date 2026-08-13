@@ -550,7 +550,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
     display: block;
 
+<<<<<<< HEAD
     color: #000 !importent;
+=======
+    color: #fff !importent;
+>>>>>>> 4f0c7e1097adaf2ebe5ea9f1a113c77fa2a596b6
 
     text-decoration: none;
 
