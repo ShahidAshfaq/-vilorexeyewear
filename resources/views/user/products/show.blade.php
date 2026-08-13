@@ -235,198 +235,754 @@
 
     </section>
 
-    @if ($relatedProducts->count() > 0)
-        <section class="related-products py-5">
+   @if ($relatedProducts->count() > 0)
+    <section class="related-products py-5">
 
-            <div class="container">
+        <div class="container">
 
+            {{-- ================= SECTION HEADER ================= --}}
+            <div class="text-center mb-5">
 
-                {{-- Section Header --}}
+                <span class="text-uppercase small fw-semibold"
+                    style="color:var(--gold-dark);">
 
-                <div class="text-center mb-5">
+                    You May Also Like
 
-                    <span class="text-uppercase small fw-semibold" style="color:var(--gold-dark);">
+                </span>
 
-                        You May Also Like
+                <h2 class="fw-bold mt-2">
+                    Related Products
+                </h2>
 
-                    </span>
+                <p class="text-muted">
+                    Explore more eyewear from the same collection.
+                </p>
 
-                    <h2 class="fw-bold mt-2">
-                        Related Products
-                    </h2>
-
-                    <p class="text-muted">
-                        Explore more eyewear from the same collection.
-                    </p>
-
-                </div>
-
-
-                {{-- Product Grid --}}
-
-                <div class="row g-4">
-
-                    @foreach ($relatedProducts as $related)
-                        @php
-
-                            $relatedImages = json_decode($related->image, true) ?? [];
-
-                            $relatedImage = $relatedImages[0] ?? 'default-product.jpg';
-
-                            $relatedOnSale = $related->on_sale && $related->sale_price;
-
-                        @endphp
+            </div>
 
 
-                        <div class="col-xl-3 col-lg-3 col-md-6 col-6">
+            {{-- ================= PRODUCT GRID ================= --}}
+            <div class="row g-4">
 
-                            <div class="product-card h-100 position-relative">
+                @foreach ($relatedProducts as $related)
+
+                    @php
+
+                        $relatedImages = json_decode($related->image, true) ?? [];
+
+                        $relatedImage = $relatedImages[0] ?? 'default-product.jpg';
+
+                        $relatedOnSale = $related->on_sale && $related->sale_price;
+
+                        $relatedOutOfStock = $related->stock <= 0;
+
+                    @endphp
 
 
-                                {{-- Sale Badge --}}
+                    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-6">
 
+                        <div class="hover-product-card">
+
+
+                            {{-- ================= IMAGE ================= --}}
+                            <div class="hover-product-image">
+
+                                <a href="{{ route('product.show', $related->id) }}">
+
+                                    <img
+                                        src="{{ asset('/storage/app/public/' . $relatedImage) }}"
+                                        alt="{{ $related->title }}"
+                                    >
+
+                                </a>
+
+
+                                {{-- ================= SALE ================= --}}
                                 @if ($relatedOnSale)
-                                    <span class="sale-badge">
 
-                                        <i class="fas fa-fire me-1"></i>
+                                    <span class="hover-sale-badge">
+
+                                        <i class="fas fa-fire"></i>
 
                                         Sale
 
                                     </span>
+
                                 @endif
 
 
-                                {{-- Out Of Stock --}}
+                                {{-- ================= OUT OF STOCK ================= --}}
+                                @if ($relatedOutOfStock)
 
-                                @if ($related->stock <= 0)
-                                    <span class="position-absolute top-0 end-0 badge bg-danger m-2" style="z-index:5;">
+                                    <span class="hover-stock-badge">
 
                                         Out of Stock
 
                                     </span>
+
                                 @endif
 
 
-                                {{-- Image --}}
+                                {{-- ================= WISHLIST ================= --}}
+                                <button
+                                    type="button"
+                                    class="hover-wishlist"
+                                    data-product="{{ $related->id }}"
+                                    title="Add to Wishlist"
+                                >
 
-                                <div class="product-image-wrapper">
+                                    <i class="far fa-heart"></i>
 
-                                    <a href="{{ route('product.show', $related->id) }}">
-
-                                        <img src="{{ asset('/storage/app/public/' . $relatedImage) }}" class="product-img"
-                                            alt="{{ $related->title }}">
-
-                                    </a>
-
-                                </div>
-
-
-                                {{-- Details --}}
-
-                                <div class="product-body">
-
-                                    {{-- Category --}}
-
-                                    <span class="product-category">
-
-                                        {{ $category->name ?? 'Eyewear' }}
-
-                                    </span>
+                                </button>
 
 
-                                    {{-- Name --}}
+                                {{-- ================= HOVER OVERLAY ================= --}}
+                                <div class="hover-product-overlay">
 
-                                    <h5>
+                                    <div class="hover-product-content">
 
-                                        <a href="{{ route('product.show', $related->id) }}">
+
+                                        {{-- Product Name --}}
+                                        <h3>
 
                                             {{ Str::limit($related->title, 35) }}
 
-                                        </a>
-
-                                    </h5>
+                                        </h3>
 
 
-                                    {{-- Attributes --}}
+                                        {{-- Price --}}
+                                        <div class="hover-price">
 
-                                    <div class="d-flex flex-wrap gap-1 mb-2">
+                                            @if ($relatedOnSale)
 
-                                        @if ($related->frame)
-                                            <span class="badge bg-light text-dark border">
+                                                <span class="sale-price">
 
-                                                {{ $related->frame }}
+                                                    Rs {{ number_format($related->sale_price) }}
 
-                                            </span>
-                                        @endif
+                                                </span>
+
+                                                <span class="original-price text-danger">
+
+                                                    Rs {{ number_format($related->price) }}
+
+                                                </span>
+
+                                            @else
+
+                                                <span class="normal-price">
+
+                                                    Rs {{ number_format($related->price) }}
+
+                                                </span>
+
+                                            @endif
+
+                                        </div>
 
 
-                                        @if ($related->lens)
-                                            <span class="badge bg-light text-dark border">
+                                        {{-- ================= STOCK ================= --}}
+                                        <div class="hover-stock">
 
-                                                {{ $related->lens }}
+                                            @if ($relatedOutOfStock)
 
-                                            </span>
-                                        @endif
+                                                <span class="stock-out">
+
+                                                    <i class="fas fa-times-circle"></i>
+
+                                                    Out of Stock
+
+                                                </span>
+
+                                            @elseif ($related->stock <= 5)
+
+                                                <span class="stock-low">
+
+                                                    <i class="fas fa-exclamation-circle"></i>
+
+                                                    Only {{ $related->stock }} left
+
+                                                </span>
+
+                                            @else
+
+                                                <span class="stock-in">
+
+                                                    <i class="fas fa-check-circle"></i>
+
+                                                    In Stock
+
+                                                </span>
+
+                                            @endif
+
+                                        </div>
+
+
+                                        {{-- ================= ACTIONS ================= --}}
+                                        <div class="hover-actions">
+
+
+                                            {{-- VIEW PRODUCT --}}
+                                            <a
+                                                href="{{ route('product.show', $related->id) }}"
+                                                class="hover-action-btn"
+                                                title="View Product"
+                                            >
+
+                                                <i class="far fa-eye"></i>
+
+                                            </a>
+
+
+                                            {{-- ADD TO CART --}}
+                                            @if (!$relatedOutOfStock)
+
+                                                <form
+                                                    action="{{ route('cart.add', $related->id) }}"
+                                                    method="POST"
+                                                >
+
+                                                    @csrf
+
+                                                    <input
+                                                        type="hidden"
+                                                        name="quantity"
+                                                        value="1"
+                                                    >
+
+                                                    <button
+                                                        type="submit"
+                                                        class="hover-action-btn"
+                                                        title="Add to Cart"
+                                                    >
+
+                                                        <i class="fas fa-shopping-cart"></i>
+
+                                                    </button>
+
+                                                </form>
+
+                                            @else
+
+                                                <button
+                                                    type="button"
+                                                    class="hover-action-btn disabled"
+                                                    disabled
+                                                    title="Out of Stock"
+                                                >
+
+                                                    <i class="fas fa-ban"></i>
+
+                                                </button>
+
+                                            @endif
+
+
+                                        </div>
 
                                     </div>
-
-
-                                    {{-- Price --}}
-
-                                    <div class="price-area mb-3">
-
-                                        @if ($relatedOnSale)
-                                            <span class="price text-danger">
-
-                                                Rs {{ number_format($related->sale_price) }}
-
-                                            </span>
-
-                                            <span class="old-price">
-
-                                                Rs {{ number_format($related->price) }}
-
-                                            </span>
-                                        @else
-                                            <span class="price">
-
-                                                Rs {{ number_format($related->price) }}
-
-                                            </span>
-                                        @endif
-
-                                    </div>
-
-
-                                    {{-- Button --}}
-
-                                    @if ($related->stock > 0)
-                                        <a href="{{ route('product.show', $related->id) }}" class="btn btn-primary w-100">
-
-                                            View Product
-
-                                        </a>
-                                    @else
-                                        <button class="btn btn-secondary w-100" disabled>
-
-                                            Out of Stock
-
-                                        </button>
-                                    @endif
 
                                 </div>
 
                             </div>
 
-                        </div>
-                    @endforeach
 
-                </div>
+                            {{-- ================= BASIC INFO ================= --}}
+                            <div class="hover-product-footer">
+
+
+                                {{-- Product Name --}}
+                                <h5>
+
+                                    <a href="{{ route('product.show', $related->id) }}">
+
+                                        {{ Str::limit($related->title, 40) }}
+
+                                    </a>
+
+                                </h5>
+
+
+                                {{-- Category --}}
+                                <small class="text-muted d-block mb-1">
+
+                                    {{ $category->name ?? 'Eyewear' }}
+
+                                </small>
+
+
+                                {{-- Attributes --}}
+                                <div class="d-flex flex-wrap gap-1 mb-2">
+
+                                    @if ($related->frame)
+
+                                        <span class="badge bg-light text-dark border">
+
+                                            {{ $related->frame }}
+
+                                        </span>
+
+                                    @endif
+
+
+                                    @if ($related->lens)
+
+                                        <span class="badge bg-light text-dark border">
+
+                                            {{ $related->lens }}
+
+                                        </span>
+
+                                    @endif
+
+                                </div>
+
+
+                                {{-- ================= FOOTER PRICE ================= --}}
+                                <div class="footer-price">
+
+                                    @if ($relatedOnSale)
+
+                                        <span>
+
+                                            Rs {{ number_format($related->sale_price) }}
+
+                                        </span>
+
+                                        <del class="text-danger">
+
+                                            Rs {{ number_format($related->price) }}
+
+                                        </del>
+
+                                    @else
+
+                                        <span>
+
+                                            Rs {{ number_format($related->price) }}
+
+                                        </span>
+
+                                    @endif
+
+                                </div>
+
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                @endforeach
 
             </div>
 
-        </section>
-    @endif
+        </div>
+
+    </section>
+@endif
+
+<style>
+        /* ==========================================
+   HOVER PRODUCT CARD
+========================================== */
+
+.hover-product-card {
+    position: relative;
+    background: #fff;
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    transition: all .35s ease;
+}
+
+.hover-product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, .12);
+}
+
+
+/* ==========================================
+   IMAGE
+========================================== */
+
+.hover-product-image {
+    position: relative;
+    height: 280px;
+    overflow: hidden;
+    background: #f5f5f5;
+}
+
+.hover-product-image > a {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.hover-product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+
+    transition: transform .5s ease;
+}
+
+.hover-product-card:hover .hover-product-image img {
+    transform: scale(1.08);
+}
+
+
+/* ==========================================
+   OVERLAY
+========================================== */
+
+.hover-product-overlay {
+    position: absolute;
+
+    inset: 0;
+
+    display: flex;
+    align-items: flex-end;
+
+    background: linear-gradient(
+        to top,
+        rgba(0, 0, 0, .85),
+        rgba(0, 0, 0, .35),
+        transparent
+    );
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    transition: all .35s ease;
+}
+
+.hover-product-card:hover .hover-product-overlay {
+    opacity: 1;
+    visibility: visible;
+}
+
+
+/* ==========================================
+   HOVER CONTENT
+========================================== */
+
+.hover-product-content {
+    width: 100%;
+    padding: 25px 20px 20px;
+
+    color: #fff;
+
+    transform: translateY(25px);
+
+    transition: transform .35s ease;
+}
+
+.hover-product-card:hover .hover-product-content {
+    transform: translateY(0);
+}
+
+
+.hover-product-content h3 {
+    margin: 0 0 8px;
+
+    font-size: 18px;
+    font-weight: 600;
+
+    color: #fff;
+}
+
+
+/* ==========================================
+   PRICE
+========================================== */
+
+.hover-price {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    margin-bottom: 8px;
+}
+
+.sale-price,
+.normal-price {
+    font-size: 19px;
+    font-weight: 700;
+    color: #fff;
+}
+
+.original-price {
+    font-size: 13px;
+    color: rgba(255,255,255,.7);
+    text-decoration: line-through;
+}
+
+
+/* ==========================================
+   STOCK
+========================================== */
+
+.hover-stock {
+    margin-bottom: 14px;
+
+    font-size: 12px;
+}
+
+.stock-in {
+    color: #72e6a0;
+}
+
+.stock-low {
+    color: #ffd166;
+}
+
+.stock-out {
+    color: #ff7b7b;
+}
+
+
+/* ==========================================
+   ACTION BUTTONS
+========================================== */
+
+.hover-actions {
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+}
+
+.hover-actions form {
+    margin: 0;
+}
+
+.hover-action-btn {
+    width: 38px;
+    height: 38px;
+
+    border: none;
+    border-radius: 50%;
+
+    background: #fff;
+    color: var(--secondary);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    text-decoration: none;
+
+    font-size: 14px;
+
+    cursor: pointer;
+
+    transition: all .25s ease;
+}
+
+.hover-action-btn:hover {
+    background: var(--primary);
+    color: #fff;
+
+    transform: translateY(-2px);
+}
+
+.hover-action-btn.disabled {
+    opacity: .5;
+    cursor: not-allowed;
+}
+
+
+/* ==========================================
+   SALE BADGE
+========================================== */
+
+.hover-sale-badge {
+    position: absolute;
+
+    top: 14px;
+    left: 14px;
+
+    z-index: 5;
+
+    background: var(--primary);
+    color: #fff;
+
+    padding: 5px 10px;
+
+    border-radius: 5px;
+
+    font-size: 11px;
+    font-weight: 600;
+}
+
+
+/* ==========================================
+   OUT OF STOCK
+========================================== */
+
+.hover-stock-badge {
+    position: absolute;
+
+    top: 48px;
+    left: 14px;
+
+    z-index: 5;
+
+    background: #dc3545;
+    color: #fff;
+
+    padding: 5px 9px;
+
+    border-radius: 5px;
+
+    font-size: 10px;
+    font-weight: 600;
+}
+
+
+/* ==========================================
+   WISHLIST
+========================================== */
+
+.hover-wishlist {
+    position: absolute;
+
+    top: 14px;
+    right: 14px;
+
+    z-index: 10;
+
+    width: 35px;
+    height: 35px;
+
+    border: none;
+    border-radius: 50%;
+
+    background: #fff;
+
+    color: var(--secondary);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+
+    box-shadow: 0 3px 10px rgba(0,0,0,.12);
+
+    transition: all .25s ease;
+}
+
+.hover-wishlist:hover {
+    color: var(--primary);
+    transform: scale(1.1);
+}
+
+
+/* ==========================================
+   FOOTER
+========================================== */
+
+.hover-product-footer {
+    padding: 14px 15px;
+}
+
+.hover-product-footer h5 {
+    margin: 0 0 6px;
+
+    font-size: 15px;
+    font-weight: 600;
+
+    line-height: 1.4;
+}
+
+.hover-product-footer h5 a {
+    color: var(--secondary);
+    text-decoration: none;
+
+    transition: .25s;
+}
+
+.hover-product-footer h5 a:hover {
+    color: var(--primary);
+}
+
+
+/* ==========================================
+   FOOTER PRICE
+========================================== */
+
+.footer-price {
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+}
+
+.footer-price span {
+    font-size: 16px;
+    font-weight: 700;
+
+    color: var(--primary);
+}
+
+.footer-price del {
+    font-size: 12px;
+    color: #999;
+}
+
+
+/* ==========================================
+   RESPONSIVE
+========================================== */
+
+@media (max-width: 991px) {
+
+    .hover-product-image {
+        height: 250px;
+    }
+
+}
+
+
+@media (max-width: 767px) {
+
+    .hover-product-image {
+        height: 230px;
+    }
+
+    .hover-product-content {
+        padding: 20px 15px 15px;
+    }
+
+    .hover-product-content h3 {
+        font-size: 16px;
+    }
+
+}
+
+
+@media (max-width: 576px) {
+
+    .hover-product-image {
+        height: 200px;
+    }
+
+    .hover-product-footer {
+        padding: 12px;
+    }
+
+    .hover-product-footer h5 {
+        font-size: 14px;
+    }
+
+}
+</style>
 
 
 @endsection
