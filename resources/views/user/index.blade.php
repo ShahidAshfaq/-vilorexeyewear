@@ -486,7 +486,7 @@
                  TRENDING NOW
             ====================================================== --}}
 
-            <div class="col-lg-4 mb-4">
+            <div class="col-lg-6 mb-4">
 
                 <div class="trend-box h-100">
 
@@ -572,10 +572,14 @@
 
                                     <strong>
 
-                                        Rs {{ number_format($product->price) }}
+                                        Rs {{ number_format($product->sale_price) }}
 
                                     </strong>
+                                     <small class="text-danger text-decoration-line-through ms-1">
 
+                                        Rs {{ number_format($product->price) }}
+
+                                    </small>
                                 @endif
 
                             </div>
@@ -702,7 +706,7 @@
                  FEATURED PRODUCTS
             ====================================================== --}}
 
-            <div class="col-lg-4 mb-4">
+            <div class="col-lg-6 mb-4">
 
                 <div class="trend-box h-100">
 
@@ -801,7 +805,7 @@
 
                                     <strong>
 
-                                        Rs {{ number_format($product->price) }}
+                                        Rs {{ number_format($product->sale_price) }}
 
                                     </strong>
 
@@ -1021,7 +1025,8 @@
 
                         <div class="customer">
 
-                            <img src="https://i.pravatar.cc/80?img=5">
+                          
+                            <img src="https://i.pravatar.cc/80?img=12">
 
                             <div>
 
@@ -1063,7 +1068,7 @@
 
                         <div class="customer">
 
-                            <img src="https://i.pravatar.cc/80?img=12">
+                            <img src="https://i.pravatar.cc/80?img=5">
 
                             <div>
 

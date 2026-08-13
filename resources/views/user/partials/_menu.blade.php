@@ -89,9 +89,12 @@
                                 @else
 
                                     <span class="normal-price">
-                                        Rs {{ number_format($product->price) }}
+                                        Rs {{ number_format($product->sale_price) }}
                                     </span>
 
+                                    <del class="text-danger">
+                                        Rs {{ number_format($product->price) }}
+                                    </del>
                                 @endif
 
                             </div>
@@ -226,8 +229,11 @@
                         @else
 
                             <span>
-                                Rs {{ number_format($product->price) }}
+                                Rs {{ number_format($product->sale_price) }}
                             </span>
+                            <del class="text-danger">
+                                Rs {{ number_format($product->price) }}
+                            </del>
 
                         @endif
 

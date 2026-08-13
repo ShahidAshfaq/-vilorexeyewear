@@ -75,10 +75,7 @@
                     </div> --}}
 
 
-        {{-- <div class="filter-heading">
-    <span>Price Range</span>
-    <i class="fas fa-tag" style="color:var(--gold-dark);"></i>
-</div> --}}
+    
         @php
             $selectedMin = (int) request('min_price', 0);
             $selectedMax = (int) request('max_price', 50000);
@@ -101,24 +98,38 @@
 
         <div class="price-slider">
 
-            <div class="slider-track"></div>
+    <div class="slider-track"></div>
 
-            <div class="slider-range" id="sliderRange"></div>
+    <div class="slider-range" id="sliderRange"></div>
 
-            <input type="range" id="minPrice" name="min_price" min="0" max="50000" step="500"
-                value="{{ $selectedMin }}">
+    <input
+        type="range"
+        id="minPrice"
+        name="min_price"
+        min="0"
+        max="50000"
+        step="500"
+        value="{{ $selectedMin }}"
+    >
 
-            <input type="range" id="maxPrice" name="max_price" min="0" max="50000" step="500"
-                value="{{ $selectedMax }}">
+    <input
+        type="range"
+        id="maxPrice"
+        name="max_price"
+        min="0"
+        max="50000"
+        step="500"
+        value="{{ $selectedMax }}"
+    >
 
-        </div>
+</div>
 
-        {{-- <button
-    type="submit"
-    class="filter-btn mt-3 w-100"
->
-    Apply Price
-</button> --}}
+<!-- Toast MUST be outside price-slider -->
+<div id="priceToast" class="price-toast">
+    <span id="priceToastText"></span>
+</div>
+
+        
 
 
         {{-- =================================================
@@ -530,21 +541,23 @@
     }
 
     /* ========================================= DESKTOP ========================================= */
-    @media (min-width: 992px) {
-        .price-slider {
-            height: 45px;
-            margin-top: 5px;
-        }
+   @media (min-width: 992px) {
 
-        .price-slider input[type="range"] {
-            height: 45px;
-        }
-
-        .slider-track,
-        .slider-range {
-            height: 6px;
-        }
+    .price-slider {
+        height: 45px;
+        margin-top: 5px;
     }
+
+    .price-slider input[type="range"] {
+        height: 45px;
+    }
+
+    .slider-track,
+    .slider-range {
+        height: 6px;
+    }
+
+}
 
     /* ========================================= MOBILE ========================================= */
     @media (max-width: 575px) {
@@ -556,58 +569,269 @@
             height: 40px;
         }
     }
+
+    /* =========================================
+   PRICE TOAST
+========================================= */
+
+.price-toast {
+    position: fixed;
+    left: 50%;
+    bottom: 30px;
+
+    transform: translate(-50%, 20px);
+    opacity: 0;
+    visibility: hidden;
+
+    background: var(--gold-dark);
+    color: #fff;
+
+    padding: 10px 18px;
+    border-radius: 8px;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+
+    z-index: 99999;
+
+    transition:
+        opacity 0.25s ease,
+        transform 0.25s ease,
+        visibility 0.25s ease;
+
+    pointer-events: none;
+}
+
+.price-toast.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, 0);
+}
+.price-slider input[type="range"] {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 40px;
+
+    margin: 0;
+    padding: 0;
+
+    background: transparent;
+    border: none;
+
+    appearance: none;
+    -webkit-appearance: none;
+
+    cursor: pointer;
+
+    /* IMPORTANT */
+    pointer-events: none;
+}
+
+/* The thumb itself receives the mouse */
+.price-slider input[type="range"]::-webkit-slider-thumb {
+    pointer-events: auto;
+}
+
+.price-slider input[type="range"]::-moz-range-thumb {
+    pointer-events: auto;
+}
 </style>
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
 
-        const minSlider = document.getElementById('minPrice');
-        const maxSlider = document.getElementById('maxPrice');
+    const minSlider = document.getElementById('minPrice');
+    const maxSlider = document.getElementById('maxPrice');
 
-        const minText = document.getElementById('minPriceText');
-        const maxText = document.getElementById('maxPriceText');
+    const minText = document.getElementById('minPriceText');
+    const maxText = document.getElementById('maxPriceText');
 
-        const sliderRange = document.getElementById('sliderRange');
+    const sliderRange = document.getElementById('sliderRange');
 
-        if (!minSlider || !maxSlider) {
-            console.log('Price sliders not found');
+    const priceToast = document.getElementById('priceToast');
+    const priceToastText = document.getElementById('priceToastText');
+
+    if (
+        !minSlider ||
+        !maxSlider ||
+        !minText ||
+        !maxText ||
+        !sliderRange
+    ) {
+        console.log('Price slider elements not found');
+        return;
+    }
+
+    let toastTimer = null;
+
+
+    /* =========================================
+       SHOW TOAST
+    ========================================= */
+
+    function showToast(type, value) {
+
+        if (!priceToast || !priceToastText) {
             return;
         }
 
-        function updatePriceSlider() {
+        if (type === 'min') {
 
-            let minValue = parseInt(minSlider.value);
-            let maxValue = parseInt(maxSlider.value);
+            priceToastText.textContent =
+                'Minimum: Rs ' + value.toLocaleString();
 
-            // Don't allow minimum to go above maximum
-            if (minValue > maxValue) {
-                minSlider.value = maxValue;
-                minValue = maxValue;
-            }
+        } else {
 
-            // Update numbers
-            minText.textContent = minValue.toLocaleString();
-            maxText.textContent = maxValue.toLocaleString();
+            priceToastText.textContent =
+                'Maximum: Rs ' + value.toLocaleString();
 
-            // Calculate percentages
-            const minPercent = (minValue / 50000) * 100;
-            const maxPercent = (maxValue / 50000) * 100;
-
-            // Update gold range
-            sliderRange.style.left = minPercent + '%';
-            sliderRange.style.width =
-                (maxPercent - minPercent) + '%';
         }
 
-        // IMPORTANT: input fires while dragging
-        minSlider.addEventListener('input', updatePriceSlider);
-        maxSlider.addEventListener('input', updatePriceSlider);
+        priceToast.classList.add('show');
 
-        // Also update when mouse/touch finishes
-        minSlider.addEventListener('change', updatePriceSlider);
-        maxSlider.addEventListener('change', updatePriceSlider);
+        clearTimeout(toastTimer);
 
-        // Initial state
+        toastTimer = setTimeout(function () {
+            priceToast.classList.remove('show');
+        }, 1000);
+    }
+
+
+    /* =========================================
+       UPDATE SLIDER
+    ========================================= */
+
+    function updatePriceSlider() {
+
+        let minValue = Number(minSlider.value);
+        let maxValue = Number(maxSlider.value);
+
+        /*
+         * Prevent MIN from going above MAX
+         */
+        if (minValue > maxValue) {
+
+            if (document.activeElement === minSlider) {
+
+                minValue = maxValue;
+                minSlider.value = maxValue;
+
+            } else {
+
+                maxValue = minValue;
+                maxSlider.value = minValue;
+            }
+        }
+
+
+        /*
+         * Update text
+         */
+        minText.textContent =
+            minValue.toLocaleString();
+
+        maxText.textContent =
+            maxValue.toLocaleString();
+
+
+        /*
+         * Slider limits
+         */
+        const min = Number(minSlider.min);
+        const max = Number(minSlider.max);
+
+
+        /*
+         * Calculate percentages
+         */
+        const minPercent =
+            ((minValue - min) / (max - min)) * 100;
+
+        const maxPercent =
+            ((maxValue - min) / (max - min)) * 100;
+
+
+        /*
+         * Gold selected range
+         */
+        sliderRange.style.left =
+            minPercent + '%';
+
+        sliderRange.style.width =
+            (maxPercent - minPercent) + '%';
+    }
+
+
+    /* =========================================
+       MIN SLIDER
+    ========================================= */
+
+    minSlider.addEventListener('input', function () {
+
         updatePriceSlider();
 
+        showToast(
+            'min',
+            Number(this.value)
+        );
+
     });
+
+
+    /* =========================================
+       MAX SLIDER
+    ========================================= */
+
+    maxSlider.addEventListener('input', function () {
+
+        updatePriceSlider();
+
+        showToast(
+            'max',
+            Number(this.value)
+        );
+
+    });
+
+
+    /* =========================================
+       CHANGE EVENT
+       Useful for desktop browsers
+    ========================================= */
+
+    minSlider.addEventListener('change', function () {
+
+        updatePriceSlider();
+
+        showToast(
+            'min',
+            Number(this.value)
+        );
+
+    });
+
+
+    maxSlider.addEventListener('change', function () {
+
+        updatePriceSlider();
+
+        showToast(
+            'max',
+            Number(this.value)
+        );
+
+    });
+
+
+    /* =========================================
+       INITIAL
+    ========================================= */
+
+    updatePriceSlider();
+
+});
 </script>

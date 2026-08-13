@@ -15,17 +15,10 @@
                             class="logo d-flex align-items-left justify-content-left justify-content-lg-ledt">
 
                             @if ($store?->logo)
-
-                                <img
-                                    src="{{ asset('storage/app/public/' . $store->logo) }}"
-                                    class="store-logo img-fluid"
-                                    alt="{{ $store->name }}"
-                                >
-
+                                <img src="{{ asset('storage/app/public/' . $store->logo) }}" class="store-logo img-fluid"
+                                    alt="{{ $store->name }}">
                             @else
-
                                 <span>{{ $store->name }}</span>
-
                             @endif
 
                         </a>
@@ -44,9 +37,7 @@
                     <div class="social-icons">
 
                         @if ($store->instagram)
-                            <a href="{{ $store->instagram }}"
-                               target="_blank"
-                               rel="noopener noreferrer">
+                            <a href="{{ $store->instagram }}" target="_blank" rel="noopener noreferrer">
 
                                 <i class="fab fa-instagram"></i>
 
@@ -55,9 +46,7 @@
 
 
                         @if ($store->facebook)
-                            <a href="{{ $store->facebook }}"
-                               target="_blank"
-                               rel="noopener noreferrer">
+                            <a href="{{ $store->facebook }}" target="_blank" rel="noopener noreferrer">
 
                                 <i class="fab fa-facebook-f"></i>
 
@@ -66,9 +55,7 @@
 
 
                         @if ($store->tiktok)
-                            <a href="{{ $store->tiktok }}"
-                               target="_blank"
-                               rel="noopener noreferrer">
+                            <a href="{{ $store->tiktok }}" target="_blank" rel="noopener noreferrer">
 
                                 <i class="fab fa-tiktok"></i>
 
@@ -77,9 +64,7 @@
 
 
                         @if ($store->twitter)
-                            <a href="{{ $store->twitter }}"
-                               target="_blank"
-                               rel="noopener noreferrer">
+                            <a href="{{ $store->twitter }}" target="_blank" rel="noopener noreferrer">
 
                                 <i class="fab fa-x-twitter"></i>
 
@@ -88,9 +73,7 @@
 
 
                         @if ($store->pinterest)
-                            <a href="{{ $store->pinterest }}"
-                               target="_blank"
-                               rel="noopener noreferrer">
+                            <a href="{{ $store->pinterest }}" target="_blank" rel="noopener noreferrer">
 
                                 <i class="fab fa-pinterest-p"></i>
 
@@ -99,9 +82,7 @@
 
 
                         @if ($store->youtube)
-                            <a href="{{ $store->youtube }}"
-                               target="_blank"
-                               rel="noopener noreferrer">
+                            <a href="{{ $store->youtube }}" target="_blank" rel="noopener noreferrer">
 
                                 <i class="fab fa-youtube"></i>
 
@@ -118,16 +99,15 @@
             {{-- ================= SHOP ================= --}}
             <div class="col-lg-2 col-md-6 col-6">
 
-                <div class="footer-widget">
+                <div class="footer-widget alin">
 
                     <h4 class="footer-title">
                         Shop
                     </h4>
 
-                    <ul>
+                    <ul class="alin">
 
                         @forelse($categories as $category)
-
                             <li>
 
                                 <a href="{{ route('product.index', ['category_id' => $category->id]) }}">
@@ -143,7 +123,6 @@
                             <li>
                                 <span>No categories available</span>
                             </li>
-
                         @endforelse
 
                     </ul>
@@ -156,13 +135,13 @@
             {{-- ================= SUPPORT ================= --}}
             <div class="col-lg-2 col-md-6 col-6">
 
-                <div class="footer-widget ">
+                <div class="footer-widget alin">
 
-                    <h4 class="footer-title">
+                    <h4 class="footer-title ">
                         Support
                     </h4>
 
-                    <ul>
+                    <ul class="alin">
 
                         <li>
                             <a href="{{ route('user.about') }}">
@@ -198,74 +177,70 @@
             {{-- ================= CONTACT ================= --}}
             <div class="col-lg-4 col-md-6 col-12">
 
-    <div class="footer-widget">
+                <div class="footer-widget alin">
 
-        <h4 class="footer-title">
-            Contact Information
-        </h4>
+                    <h4 class="footer-title">
+                        Contact Information
+                    </h4>
 
-        <ul class="contact-list">
+                    <ul class="contact-list alin">
 
-            @if ($store)
+                        @if ($store)
 
-                {{-- ADDRESS --}}
-                @if ($store->address)
+                            {{-- ADDRESS --}}
+                            @if ($store->address)
 
-                    <li>
+                                <li>
 
-                        <i class="fas fa-map-marker-alt"></i>
+                                    <i class="fas fa-map-marker-alt"></i>
 
-                        <span>
-                            {{ $store->address }}
+                                    <span>
+                                        {{ $store->address }}
 
-                            @if ($store->city)
-                                , {{ $store->city }}
+                                        @if ($store->city)
+                                            , {{ $store->city }}
+                                        @endif
+                                    </span>
+
+                                </li>
+
                             @endif
-                        </span>
-
-                    </li>
-
-                @endif
 
 
-                {{-- PHONE --}}
-                @if ($store->phone)
+                            {{-- PHONE --}}
+                            @if ($store->phone)
+                                <li>
 
-                    <li>
+                                    <i class="fas fa-phone"></i>
 
-                        <i class="fas fa-phone"></i>
+                                    <span>
+                                        {{ $store->phone }}
+                                    </span>
 
-                        <span>
-                            {{ $store->phone }}
-                        </span>
-
-                    </li>
-
-                @endif
+                                </li>
+                            @endif
 
 
-                {{-- EMAIL --}}
-                @if ($store->email)
+                            {{-- EMAIL --}}
+                            @if ($store->email)
+                                <li>
 
-                    <li>
+                                    <i class="fas fa-envelope"></i>
 
-                        <i class="fas fa-envelope"></i>
+                                    <span>
+                                        {{ $store->email }}
+                                    </span>
 
-                        <span>
-                            {{ $store->email }}
-                        </span>
+                                </li>
+                            @endif
 
-                    </li>
+                        @endif
 
-                @endif
+                    </ul>
 
-            @endif
+                </div>
 
-        </ul>
-
-    </div>
-
-</div>
+            </div>
 
         </div>
 
@@ -273,197 +248,12 @@
 
 </footer>
 <style>
-    /* =========================================
-   FOOTER RESPONSIVE
-========================================= */
-.contact-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.contact-list li {
+.alin{ 
     display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+  
+    padding: o;
     align-items: flex-start;
-    gap: 12px;
-    margin-bottom: 15px;
-}
-
-.contact-list li i {
-    width: 20px;
-    min-width: 20px;
-    margin-top: 4px;
-    color: var(--primary);
-}
-
-.contact-list li span {
-    line-height: 1.6;
-}
-.footer {
-    overflow: hidden;
-}
-
-.footer-widget {
-    width: 100%;
-}
-
-.footer-logo {
-    margin-bottom: 20px;
-}
-
-.footer-logo .store-logo {
-    max-width: 150px;
-    width: auto;
-    height: auto;
-    max-height: 60px;
-    object-fit: contain;
-}
-
-.footer-text {
-    max-width: 420px;
-}
-
-
-/* Contact information */
-
-.contact-list {
-    padding: 0;
-    margin: 0;
-    list-style: none;
-}
-
-.contact-list li {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    margin-bottom: 15px;
-}
-
-.contact-list li i {
-    flex-shrink: 0;
-    margin-top: 4px;
-}
-
-
-/* Social icons */
-
-.social-icons {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    flex-wrap: wrap;
-}
-
-.social-icons a {
-    width: 38px;
-    height: 38px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-
-/* =========================================
-   TABLET
-========================================= */
-
-@media (max-width: 991px) {
-
-    .footer {
-        padding-top: 50px;
-        padding-bottom: 30px;
-    }
-
-    .footer-widget {
-        margin-bottom: 10px;
-    }
-
-}
-
-
-/* =========================================
-   MOBILE
-========================================= */
-
-@media (max-width: 767px) {
-
-    .footer {
-        padding-top: 40px;
-        padding-bottom: 25px;
-    }
-
-    .footer-logo {
-        text-align: center;
-    }
-
-    .footer-logo .logo {
-        justify-content: center !important;
-    }
-
-    .footer-text {
-        max-width: 100%;
-        text-align: center;
-        font-size: 14px;
-        line-height: 1.7;
-    }
-
-    .social-icons {
-        justify-content: center;
-        margin-top: 20px;
-    }
-
-    .footer-title {
-        font-size: 17px;
-        margin-bottom: 15px;
-    }
-
-    .footer-widget ul {
-        padding-left: 0;
-    }
-
-    .footer-widget ul li {
-        margin-bottom: 10px;
-    }
-
-    .contact-list li {
-        font-size: 14px;
-        gap: 10px;
-    }
-
-}
-
-
-/* =========================================
-   SMALL MOBILE
-========================================= */
-
-@media (max-width: 576px) {
-
-    .footer .container {
-        padding-left: 20px;
-        padding-right: 20px;
-    }
-
-    .footer-text {
-        font-size: 13px;
-    }
-
-    .footer-title {
-        font-size: 16px;
-    }
-
-    .footer-widget ul li {
-        font-size: 14px;
-    }
-
-    .contact-list li {
-        font-size: 13px;
-    }
-
-    .social-icons a {
-        width: 35px;
-        height: 35px;
-    }
-
 }
 </style>

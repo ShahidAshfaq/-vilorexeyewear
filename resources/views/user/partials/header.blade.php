@@ -550,7 +550,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     display: block;
 
-    color: #fff;
+    color: #000 !importent;
 
     text-decoration: none;
 

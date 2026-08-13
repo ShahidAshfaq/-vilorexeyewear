@@ -25,8 +25,7 @@
   <link href="{{asset('admin/assets/vendor/quill/quill.bubble.css')}}" rel="stylesheet">
   <link href="{{asset('admin/assets/vendor/remixicon/remixicon.css')}}" rel="stylesheet">
   <link href="{{asset('admin/assets/vendor/simple-datatables/style.css')}}" rel="stylesheet">
-  <link href="{{ mix('css/app.css') }}" rel="stylesheet">
-  <script src="{{ mix('js/app.js') }}"></script>
+  @vite(['resources/css/app.css', 'resources/js/app.js'])
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <!-- Template Main CSS File -->
   <link href="{{asset('admin/assets/css/style.css')}}" rel="stylesheet">
