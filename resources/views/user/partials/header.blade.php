@@ -267,31 +267,31 @@
                 <ul class="navbar-links">
 
                     <li>
-                        <a href="{{ route('home') }}">
+                        <a href="{{ route('home') }}" class="text-dark">
                             Home
                         </a>
                     </li>
 
                     <li>
-                        <a href="{{ route('user.about') }}">
+                        <a href="{{ route('user.about') }}" class="text-dark">
                             About
                         </a>
                     </li>
 
                     <li>
-                        <a href="{{ route('product.index') }}">
+                        <a href="{{ route('product.index') }}" class="text-dark">
                             Products
                         </a>
                     </li>
 
                     <li>
-                        <a href="{{ route('user.contact') }}">
+                        <a href="{{ route('user.contact') }}" class="text-dark">
                             Contact
                         </a>
                     </li>
 
                     <li>
-                        <a href="{{ route('order.track') }}">
+                        <a href="{{ route('order.track') }}" class="text-dark">
                             Order Track
                         </a>
                     </li>

@@ -207,13 +207,13 @@
 
                             </div>
 
-                            <div>
+                            {{-- <div>
 
                                 <i class="fas fa-sync"></i>
 
                                 7 Days Return
 
-                            </div>
+                            </div> --}}
 
                             <div>
 
