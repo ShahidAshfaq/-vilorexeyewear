@@ -94,9 +94,10 @@
                 {{-- PAGINATION --}}
                 @if ($products->hasPages())
 
-                    <div class="d-flex justify-content-center mt-5">
+                    <div class="d-fle justify-content-cente mt-5">
 
-                        {{ $products->links() }}
+                        {{-- {{ $products->links('pagination::bootstrap-5') }} --}}
+                        {{ $products->links('pagination') }}
 
                     </div>
 
