@@ -1026,13 +1026,13 @@
                         <div class="customer">
 
                           
-                            <img src="https://i.pravatar.cc/80?img=12">
+                            <img src="{{ asset('user/assets/img/testmonials/1.jpeg') }}">
 
                             <div>
 
                                 <strong>
 
-                                    Ali Raza
+                                    Zaid Sheikh
 
                                 </strong>
 
@@ -1068,19 +1068,20 @@
 
                         <div class="customer">
 
-                            <img src="https://i.pravatar.cc/80?img=5">
+                            <img src="{{ asset('user/assets/img/testmonials/3.jpeg') }}">
 
                             <div>
 
                                 <strong>
 
-                                    Ayesha Khan
+                                     
+                                    Jannat Ali 
 
                                 </strong>
 
                                 <small>
 
-                                    Islamabad
+                                    Gujranwala
 
                                 </small>
 
@@ -1110,19 +1111,19 @@
 
                         <div class="customer">
 
-                            <img src="https://i.pravatar.cc/80?img=15">
+                            <img src="{{ asset('user/assets/img/testmonials/2.jpeg') }}">
 
                             <div>
 
                                 <strong>
 
-                                    Ahmed
+                                    Dr Abdullah 
 
                                 </strong>
 
                                 <small>
 
-                                    Karachi
+                                    Sheikhupura
 
                                 </small>
 

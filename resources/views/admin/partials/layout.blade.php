@@ -197,7 +197,7 @@
         </li>
 
         <!-- Blog -->
-        <li class="nav-item">
+        {{-- <li class="nav-item">
             <a class="nav-link collapsed" data-bs-target="#blog-nav" data-bs-toggle="collapse" href="#">
                 <i class="bi bi-journal-richtext"></i>
                 <span>Blog</span>
@@ -219,7 +219,7 @@
                     </a>
                 </li>
             </ul>
-        </li>
+        </li> --}}
 
         <!-- Coupons -->
         <li class="nav-item">
