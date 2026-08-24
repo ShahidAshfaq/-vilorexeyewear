@@ -691,7 +691,7 @@
                             $firstImage = $images[0] ?? 'default-product.jpg';
 
                             $isOnSale =
-                                $product->on_sale == 1 &&
+                                // $product->on_sale == 1 &&
                                 !empty($product->sale_price) &&
                                 $product->sale_price > 0;
                         @endphp
@@ -746,9 +746,9 @@
                                         Rs {{ number_format($product->price) }}
                                     </small>
 
-                                    <span class="badge bg-danger ms-1">
+                                    {{-- <span class="badge bg-danger ms-1">
                                         Sale
-                                    </span>
+                                    </span> --}}
 
                                 @else
 
