@@ -28,6 +28,7 @@ class Product extends Model
         'gender',
         'on_sale',
         'featured',
+        'trending',
     ];
 
 

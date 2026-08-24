@@ -943,14 +943,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
     <div class="offcanvas-header">
 
-        <a href="{{ route('home') }}" class="logo d-flex align-items-center">
+        {{-- <a href="{{ route('home') }}" class="logo d-flex align-items-center">
             @if ($store?->logo)
                 <img src="{{ asset('storage/app/public/' . $store->logo) }}" class="store-logo"
                     alt="{{ $store->name }}">
             @else
                 <span>{{ $store->name }}</span>
             @endif
-        </a>
+        </a> --}}
 
         <button class="btn-close" data-bs-dismiss="offcanvas">
         </button>
@@ -959,21 +959,26 @@ document.addEventListener('DOMContentLoaded', function () {
 
     <div class="offcanvas-body">
 
-        <form class="mb-4" action="{{ route('product.index') }}">
+    <form class="mb-4"
+      action="{{ route('product.index') }}"
+      method="GET">
 
-            <div class="search-box">
+    <div class="search-box">
 
-                <input type="text" name="search" placeholder="Search Products">
+        <input
+            type="text"
+            name="search"
+            placeholder="Search Products by title..."
+            value="{{ request('search') }}"
+        >
 
-                <button>
+        <button type="submit">
+            <i class="fas fa-search"></i>
+        </button>
 
-                    <i class="fas fa-search"></i>
+    </div>
 
-                </button>
-
-            </div>
-
-        </form>
+</form>
 
         <ul class="mobile-nav">
 

@@ -21,89 +21,105 @@ class UserCartController extends Controller
         // Categories
         $categories = Category::orderBy('name', 'asc')->get();
 
-        // Products
-        $products = Product::query()
+       $products = Product::query()
 
-            // Category
-            ->when($request->filled('category_id'), function ($query) use ($request) {
+    // Search by Title or SKU
+    ->when($request->filled('search'), function ($query) use ($request) {
 
-                $query->where('category_id', $request->category_id);
+        $search = $request->search;
 
-            })
+        $query->where(function ($q) use ($search) {
 
-            // Minimum Price
-            ->when($request->filled('min_price'), function ($query) use ($request) {
+            $q->where('title', 'like', '%' . $search . '%')
+              ->orWhere('sku', 'like', '%' . $search . '%');
 
-                $query->where('price', '>=', $request->min_price);
+        });
 
-            })
+    })
 
-            // Maximum Price
-            ->when($request->filled('max_price'), function ($query) use ($request) {
+    // Category
+    ->when($request->filled('category_id'), function ($query) use ($request) {
 
-                $query->where('price', '<=', $request->max_price);
+        $query->where('category_id', $request->category_id);
 
-            })
+    })
 
-            // Frame Type
-            ->when($request->filled('frame_type'), function ($query) use ($request) {
+    // Minimum Price
+    ->when($request->filled('min_price'), function ($query) use ($request) {
 
-                $query->whereIn('frame', $request->frame_type);
+        $query->where('price', '>=', $request->min_price);
 
-            })
+    })
 
-            // Lens Type
-            ->when($request->filled('lens_type'), function ($query) use ($request) {
+    // Maximum Price
+    ->when($request->filled('max_price'), function ($query) use ($request) {
 
-                $query->whereIn('lens', $request->lens_type);
+        $query->where('price', '<=', $request->max_price);
 
-            })
+    })
 
-            // Gender
-            ->when($request->filled('gender'), function ($query) use ($request) {
+    // Frame Type
+    ->when($request->filled('frame_type'), function ($query) use ($request) {
 
-                $query->whereIn('gender', $request->gender);
+        $query->whereIn('frame', $request->frame_type);
 
-            })
+    })
 
-            // Availability
-            ->when(
-                $request->availability === 'in_stock',
-                function ($query) {
+    // Lens Type
+    ->when($request->filled('lens_type'), function ($query) use ($request) {
 
-                    $query->where('stock', '>', 0);
+        $query->whereIn('lens', $request->lens_type);
 
-                }
-            )
+    })
 
-            // On Sale
-            ->when(
-                $request->sale == '1',
-                function ($query) {
+    // Gender
+    ->when($request->filled('gender'), function ($query) use ($request) {
 
-                    $query->where('on_sale', 1);
+        $query->whereIn('gender', $request->gender);
 
-                }
-            )
+    })
 
-            // Latest Products First
-            ->latest()
+    // Availability
+    ->when(
+        $request->availability === 'in_stock',
+        function ($query) {
 
-            // Pagination
-            ->paginate(12)
+            $query->where('stock', '>', 0);
 
-            // Keep filters in pagination links
-            ->withQueryString();
+        }
+    )
+
+    // On Sale
+    ->when(
+        $request->sale == '1',
+        function ($query) {
+
+            $query->where('on_sale', 1);
+
+        }
+    )
+
+    // Only Active Products
+    ->where('status', 1)
+
+    // Latest Products First
+    ->latest()
+
+    // Pagination
+    ->paginate(12)
+
+    // Keep All Filters During Pagination
+    ->withQueryString();
 
 
-        return view(
-            'user.products.index',
-            compact(
-                'products',
-                'categories',
-                'cities'
-            )
-        );
+return view(
+    'user.products.index',
+    compact(
+        'products',
+        'categories',
+        'cities'
+    )
+);
     }
 
     /**

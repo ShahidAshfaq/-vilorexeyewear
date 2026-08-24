@@ -91,58 +91,57 @@
 
             </div>
         @endforeach --}}
-        @if($userProfile)
+        @if ($userProfile)
+            <div class="container">
 
-    <div class="container">
+                <div class="row align-items-center min-vh-100">
 
-        <div class="row align-items-center min-vh-100">
+                    {{-- LEFT CONTENT --}}
 
-            {{-- LEFT CONTENT --}}
+                    <div class="col-lg-6 pt-3 text-center">
 
-            <div class="col-lg-6 pt-3 text-center">
+                        <span class="hero-badge">
 
-                <span class="hero-badge">
+                            Premium Eyewear Collection
 
-                    Premium Eyewear Collection
-
-                </span>
-
-
-                <h1 class="hero-title mt-4">
-
-                    {{ $userProfile->name }}
-
-                </h1>
+                        </span>
 
 
-                <p class="hero-text mt-4">
+                        <h1 class="hero-title mt-4">
 
-                    {{ $userProfile->description }}
+                            {{ $userProfile->name }}
 
-                </p>
-
-
-                <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center">
-
-                    <a href="{{ route('product.index') }}"
-                       class="btn btn-dark btn-lg rounded-pill px-4 px-sm-5 w-100 w-sm-auto">
-
-                        Shop Now
-
-                    </a>
+                        </h1>
 
 
-                    <a href="#categories"
-                       class="btn btn-outline-dark btn-lg rounded-pill px-4 px-sm-5 w-100 w-sm-auto">
+                        <p class="hero-text mt-4">
 
-                        Browse Categories
+                            {{ $userProfile->description }}
 
-                    </a>
-
-                </div>
+                        </p>
 
 
-                {{-- <div class="row text-center mt-5 g-3">
+                        <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center">
+
+                            <a href="{{ route('product.index') }}"
+                                class="btn btn-dark btn-lg rounded-pill px-4 px-sm-5 w-100 w-sm-auto">
+
+                                Shop Now
+
+                            </a>
+
+
+                            <a href="#categories"
+                                class="btn btn-outline-dark btn-lg rounded-pill px-4 px-sm-5 w-100 w-sm-auto">
+
+                                Browse Categories
+
+                            </a>
+
+                        </div>
+
+
+                        {{-- <div class="row text-center mt-5 g-3">
 
                     <div class="col-12 col-sm-6 col-md-4">
 
@@ -166,83 +165,70 @@
 
                 </div> --}}
 
-            </div>
+                    </div>
 
 
-            {{-- RIGHT HERO IMAGE --}}
+                    {{-- RIGHT HERO IMAGE --}}
 
-            <div class="col-lg-6 text-center position-relative">
+                    <div class="col-lg-6 text-center position-relative">
 
-                @if($userProfile->image)
-
-                    <img
-                        src="{{ asset('/storage/app/public/' . $userProfile->image) }}"
-                        class="img-fluid hero-image"
-                        alt="{{ $userProfile->name }}"
-                    >
-
-                @endif
+                        @if ($userProfile->image)
+                            <img src="{{ asset('/storage/app/public/' . $userProfile->image) }}"
+                                class="img-fluid hero-image" alt="{{ $userProfile->name }}">
+                        @endif
 
 
-                {{-- Floating Card --}}
+                        {{-- Floating Card --}}
 
-                <div class="floating-card shadow">
+                        <div class="floating-card shadow">
 
-                    @if($userProfile->logo)
-
-                        <img
-                            src="{{ asset('/storage/app/public/' . $userProfile->image) }}"
-                            alt="{{ $userProfile->name }}"
-                        >
-
-                    @endif
+                            @if ($userProfile->logo)
+                                <img src="{{ asset('/storage/app/public/' . $userProfile->image) }}"
+                                    alt="{{ $userProfile->name }}">
+                            @endif
 
 
-                    <h6 class="mt-3">
+                            <h6 class="mt-3">
 
-                        {{ $userProfile->name }}
+                                {{ $userProfile->name }}
 
-                    </h6>
+                            </h6>
 
 
-                    <strong>
+                            <strong>
 
-                        Premium Eyewear
+                                Premium Eyewear
 
-                    </strong>
+                            </strong>
+
+                        </div>
+
+                    </div>
 
                 </div>
 
             </div>
+        @else
+            <div class="container text-center py-5">
 
-        </div>
+                <h2>Welcome to Our Store</h2>
 
-    </div>
+                <p class="text-muted">
+                    Discover our premium eyewear collection.
+                </p>
 
-@else
+                <a href="{{ route('product.index') }}" class="btn btn-dark rounded-pill px-4">
 
-    <div class="container text-center py-5">
+                    Shop Now
 
-        <h2>Welcome to Our Store</h2>
+                </a>
 
-        <p class="text-muted">
-            Discover our premium eyewear collection.
-        </p>
+            </div>
+        @endif
 
-        <a href="{{ route('product.index') }}"
-           class="btn btn-dark rounded-pill px-4">
+    </section>
 
-            Shop Now
 
-        </a>
-
-    </div>
-
-@endif
-
-</section>
-
-    
 
     <section id="categories" class="py-5 bg-white">
 
@@ -481,39 +467,33 @@
 
         <div class="row g-4">
 
-
             {{-- =====================================================
                  TRENDING NOW
             ====================================================== --}}
-
-            <div class="col-lg-6 mb-4">
+            <div class="col-lg-4 mb-4">
 
                 <div class="trend-box h-100">
 
                     <h4 class="trend-title">
-
                         <i class="fas fa-fire text-danger"></i>
-
                         Trending Now
-
                     </h4>
 
-
-                    @foreach ($products->take(3) as $product)
+                    @forelse ($trendingProducts as $product)
 
                         @php
                             $images = json_decode($product->image, true) ?? [];
                             $firstImage = $images[0] ?? 'default-product.jpg';
 
-                            $isOnSale = $product->on_sale && $product->sale_price;
+                            $isOnSale =
+                                $product->on_sale == 1 &&
+                                !empty($product->sale_price) &&
+                                $product->sale_price > 0;
                         @endphp
-
 
                         <div class="trend-item">
 
-
                             {{-- Product Image --}}
-
                             <a href="{{ route('product.show', $product->id) }}">
 
                                 <img
@@ -529,20 +509,17 @@
 
                             </a>
 
-
+                            {{-- Product Information --}}
                             <div class="flex-grow-1">
 
+                                {{-- Product Title --}}
                                 <h6>
-
                                     <a href="{{ route('product.show', $product->id) }}">
-
                                         {{ Str::limit($product->title, 25) }}
-
                                     </a>
-
                                 </h6>
 
-
+                                {{-- Rating --}}
                                 <div class="rating">
 
                                     <i class="fas fa-star"></i>
@@ -553,79 +530,74 @@
 
                                 </div>
 
-
-                                @if($isOnSale)
+                                {{-- Price --}}
+                                @if ($isOnSale)
 
                                     <strong class="text-danger">
-
                                         Rs {{ number_format($product->sale_price) }}
-
                                     </strong>
 
                                     <small class="text-muted text-decoration-line-through ms-1">
-
                                         Rs {{ number_format($product->price) }}
-
                                     </small>
+
+                                    <span class="badge bg-danger ms-1">
+                                        Sale
+                                    </span>
 
                                 @else
 
                                     <strong>
-
-                                        Rs {{ number_format($product->sale_price) }}
-
-                                    </strong>
-                                     <small class="text-danger text-decoration-line-through ms-1">
-
                                         Rs {{ number_format($product->price) }}
+                                    </strong>
 
-                                    </small>
                                 @endif
 
                             </div>
 
                         </div>
 
-                    @endforeach
+                    @empty
+
+                        <div class="text-center py-4">
+
+                            <i class="fas fa-fire text-muted fs-3 mb-2"></i>
+
+                            <p class="text-muted small mb-0">
+                                No trending products available.
+                            </p>
+
+                        </div>
+
+                    @endforelse
 
                 </div>
 
             </div>
 
 
-
             {{-- =====================================================
-                 BEST SELLERS
+                 ON SALE
             ====================================================== --}}
-
-            {{-- <div class="col-lg-4 mb-4">
+            <div class="col-lg-4 mb-4">
 
                 <div class="trend-box h-100">
 
                     <h4 class="trend-title">
-
-                        <i class="fas fa-star text-warning"></i>
-
-                        Best Sellers
-
+                        <i class="fas fa-tags text-danger"></i>
+                        On Sale
                     </h4>
 
-
-                    @foreach ($products->skip(3)->take(3) as $product)
+                    @forelse ($onSaleProducts as $product)
 
                         @php
                             $images = json_decode($product->image, true) ?? [];
                             $firstImage = $images[0] ?? 'default-product.jpg';
-
-                            $isOnSale = $product->on_sale && $product->sale_price;
                         @endphp
-
 
                         <div class="trend-item">
 
-
-                            Product Image
-
+                            {{-- Product Image --}}
                             <a href="{{ route('product.show', $product->id) }}">
 
                                 <img
@@ -641,20 +613,17 @@
 
                             </a>
 
-
+                            {{-- Product Information --}}
                             <div class="flex-grow-1">
 
+                                {{-- Product Title --}}
                                 <h6>
-
                                     <a href="{{ route('product.show', $product->id) }}">
-
                                         {{ Str::limit($product->title, 25) }}
-
                                     </a>
-
                                 </h6>
 
-
+                                {{-- Rating --}}
                                 <div class="rating">
 
                                     <i class="fas fa-star"></i>
@@ -665,66 +634,55 @@
 
                                 </div>
 
+                                {{-- Sale Price --}}
+                                <strong class="text-danger">
+                                    Rs {{ number_format($product->sale_price) }}
+                                </strong>
 
-                                @if($isOnSale)
+                                {{-- Original Price --}}
+                                <small class="text-muted text-decoration-line-through ms-1">
+                                    Rs {{ number_format($product->price) }}
+                                </small>
 
-                                    <strong class="text-danger">
-
-                                        Rs {{ number_format($product->sale_price) }}
-
-                                    </strong>
-
-                                    <small class="text-muted text-decoration-line-through ms-1">
-
-                                        Rs {{ number_format($product->price) }}
-
-                                    </small>
-
-                                @else
-
-                                    <strong>
-
-                                        Rs {{ number_format($product->price) }}
-
-                                    </strong>
-
-                                @endif
+                                {{-- Sale Badge --}}
+                                <span class="badge bg-danger ms-1">
+                                    Sale
+                                </span>
 
                             </div>
 
                         </div>
 
-                    @endforeach
+                    @empty
+
+                        <div class="text-center py-4">
+
+                            <i class="fas fa-tags text-muted fs-3 mb-2"></i>
+
+                            <p class="text-muted small mb-0">
+                                No products on sale.
+                            </p>
+
+                        </div>
+
+                    @endforelse
 
                 </div>
 
-            </div> --}}
-
+            </div>
 
 
             {{-- =====================================================
                  FEATURED PRODUCTS
             ====================================================== --}}
-
-            <div class="col-lg-6 mb-4">
+            <div class="col-lg-4 mb-4">
 
                 <div class="trend-box h-100">
 
                     <h4 class="trend-title">
-
                         <i class="far fa-gem text-primary"></i>
-
                         Featured Items
-
                     </h4>
-
-
-                    @php
-                        $featuredProducts = $products
-                            ->where('featured', 1)
-                            ->take(3);
-                    @endphp
-
 
                     @forelse ($featuredProducts as $product)
 
@@ -733,16 +691,14 @@
                             $firstImage = $images[0] ?? 'default-product.jpg';
 
                             $isOnSale =
-                                $product->on_sale &&
-                                $product->sale_price;
+                                $product->on_sale == 1 &&
+                                !empty($product->sale_price) &&
+                                $product->sale_price > 0;
                         @endphp
-
 
                         <div class="trend-item">
 
-
                             {{-- Product Image --}}
-
                             <a href="{{ route('product.show', $product->id) }}">
 
                                 <img
@@ -758,22 +714,17 @@
 
                             </a>
 
-
+                            {{-- Product Information --}}
                             <div class="flex-grow-1">
 
+                                {{-- Product Title --}}
                                 <h6>
-
                                     <a href="{{ route('product.show', $product->id) }}">
-
                                         {{ Str::limit($product->title, 25) }}
-
                                     </a>
-
                                 </h6>
 
-
                                 {{-- Rating --}}
-
                                 <div class="rating">
 
                                     <i class="fas fa-star"></i>
@@ -784,43 +735,26 @@
 
                                 </div>
 
-
                                 {{-- Price --}}
-
-                                @if($isOnSale)
+                                @if ($isOnSale)
 
                                     <strong class="text-danger">
-
                                         Rs {{ number_format($product->sale_price) }}
-
                                     </strong>
 
                                     <small class="text-muted text-decoration-line-through ms-1">
-
                                         Rs {{ number_format($product->price) }}
-
                                     </small>
+
+                                    <span class="badge bg-danger ms-1">
+                                        Sale
+                                    </span>
 
                                 @else
 
                                     <strong>
-
-                                        Rs {{ number_format($product->sale_price) }}
-
+                                        Rs {{ number_format($product->price) }}
                                     </strong>
-
-                                @endif
-
-
-                                {{-- Sale --}}
-
-                                @if($isOnSale)
-
-                                    <span class="badge bg-danger ms-1">
-
-                                        Sale
-
-                                    </span>
 
                                 @endif
 
@@ -835,9 +769,7 @@
                             <i class="far fa-gem text-muted fs-3 mb-2"></i>
 
                             <p class="text-muted small mb-0">
-
                                 No featured products available.
-
                             </p>
 
                         </div>
@@ -847,7 +779,6 @@
                 </div>
 
             </div>
-
 
         </div>
 
@@ -1025,7 +956,7 @@
 
                         <div class="customer">
 
-                          
+
                             <img src="{{ asset('user/assets/img/testmonials/1.jpeg') }}">
 
                             <div>
@@ -1074,8 +1005,8 @@
 
                                 <strong>
 
-                                     
-                                    Jannat Ali 
+
+                                    Jannat Ali
 
                                 </strong>
 
@@ -1117,7 +1048,7 @@
 
                                 <strong>
 
-                                    Dr Abdullah 
+                                    Dr Abdullah
 
                                 </strong>
 
@@ -1155,7 +1086,8 @@
 
                 <p>
 
-                    <a href="https://www.instagram.com/vilorexeyewear/" target="_blank" rel="noopener noreferrer"> @vilorexeyewear</a>
+                    <a href="https://www.instagram.com/vilorexeyewear/" target="_blank" rel="noopener noreferrer">
+                        @vilorexeyewear</a>
 
                 </p>
 

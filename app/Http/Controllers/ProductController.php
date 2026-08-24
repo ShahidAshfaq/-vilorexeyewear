@@ -14,13 +14,33 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        $categories = Category::all();
-       
-        $products = Product::all();
-        return view('admin.menu.allmenue', compact('products','categories'));
-    }
+    public function index(Request $request)
+{
+    $categories = Category::all();
+
+    $search = $request->input('search');
+
+    $products = Product::query()
+        ->when($search, function ($query, $search) {
+
+            $query->where(function ($q) use ($search) {
+
+                $q->where('title', 'like', '%' . $search . '%')
+                  ->orWhere('sku', 'like', '%' . $search . '%');
+
+            });
+
+        })
+        ->latest()
+        ->paginate(20)
+        ->withQueryString();
+
+    return view('admin.menu.allmenue', compact(
+        'products',
+        'categories',
+        'search'
+    ));
+}
 
   public function home(Request $request)
 {
@@ -43,12 +63,31 @@ class ProductController extends Controller
         ->orderBy('created_at', 'desc')
         ->take(3)
         ->get();
+  $featuredProducts = Product::where('status', 1)
+    ->where('featured', 1)
+    ->orderBy('created_at', 'desc')
+    ->take(3)
+    ->get();
 
+    $onSaleProducts = Product::where('status', 1)
+    ->where('on_sale', 1)
+    ->orderBy('created_at', 'desc')
+    ->take(3)
+    ->get();
+
+    $trendingProducts = Product::where('status', 1)
+    ->where('trending', 1)
+    ->orderBy('created_at', 'desc')
+    ->take(3)
+    ->get();
     return view('user.index', compact(
         'products',
         'categories',
         'userProfile',
-        'cat'
+        'cat',
+        'onSaleProducts',
+        'trendingProducts',
+        'featuredProducts'
     ));
 }
     /**
@@ -118,6 +157,7 @@ public function store(Request $request)
         'category_id' => $request->category_id,
         'status' => $request->status,
         'featured' => $request->featured,
+        'trending' => $request->trending,
 
         // Eyewear fields
         'frame' => $request->frame,
@@ -210,6 +250,7 @@ public function update(Request $request, Product $product)
     'category_id' => $request->category_id,
     'status' => $request->status,
     'featured' => $request->featured,
+    'trending' => $request->trending,
     'image' => json_encode($imagePaths),
     'frame' => $request->frame,
     'lens' => $request->lens,
