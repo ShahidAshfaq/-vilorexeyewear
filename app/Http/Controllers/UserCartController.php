@@ -177,9 +177,9 @@ return view(
     /**
      * Display the specified resource.
      */
- public function show($id)
+public function show($slug)
 {
-    $product = Product::findOrFail($id);
+    $product = Product::where('slug', $slug)->firstOrFail();
 
     $categories = Category::orderBy('name', 'asc')->get();
 

@@ -45,6 +45,10 @@ Route::get('/about', function () {
 })->name('user.about');
 
 Route::resource('product', UserCartController::class);
+Route::resource('product', UserCartController::class)
+    ->parameters([
+        'product' => 'slug'
+    ]);
 Route::get('/receipt/{order}', [UserCartController::class, 'showReceipt'])->name('user.recipt');
 Route::get('/track-order', [CartController::class, 'track'])->name('order.track');
     

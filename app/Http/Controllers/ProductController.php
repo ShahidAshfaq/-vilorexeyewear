@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\UserProfile;
@@ -102,6 +103,8 @@ class ProductController extends Controller
 
 
 
+// puse Illuminate\Support\Str;
+
 public function store(Request $request)
 {
     // Validate the request
@@ -147,8 +150,23 @@ public function store(Request $request)
         }
     }
 
+    // Generate unique slug from product title
+    $slug = Str::slug($request->title);
+
+    $originalSlug = $slug;
+    $count = 1;
+
+    while (Product::where('slug', $slug)->exists()) {
+        $slug = $originalSlug . '-' . $count;
+        $count++;
+    }
+
     Product::create([
         'title' => $request->title,
+
+        // Slug
+        'slug' => $slug,
+
         'description' => $request->description,
         'price' => $request->price,
         'sale_price' => $request->sale_price,
@@ -201,65 +219,130 @@ public function store(Request $request)
    
 public function update(Request $request, Product $product)
 {
-    // Validate the request
-   $request->validate([
-    'title' => 'required|string|max:255',
-    'description' => 'required|string',
-    'price' => 'required|numeric|min:0',
-    'sale_price' => 'nullable|numeric|min:0',
-    'sku' => 'required|string|max:100|unique:products,sku,' . $product->id,
-    'stock' => 'required|integer|min:0',
-    'category_id' => 'required|exists:categories,id',
-    'status' => 'required|boolean',
-    'image.*' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:51200',
-    'frame' => 'nullable|string|max:100',
-    'lens' => 'nullable|string|max:100',
-    'gender' => 'nullable|string|max:50',
-    'on_sale' => 'nullable|boolean',
-]);
-    // Get existing images
-    $imagePaths = json_decode($product->image) ?? []; // Existing images
+    $request->validate([
+        'title' => 'required|string|max:255',
+        'description' => 'required|string',
+        'price' => 'required|numeric|min:0',
+        'sale_price' => 'nullable|numeric|min:0',
 
-    // Check if new images are uploaded
+        'sku' => 'required|string|max:100|unique:products,sku,' . $product->id,
+
+        'stock' => 'required|integer|min:0',
+        'category_id' => 'required|exists:categories,id',
+        'status' => 'required|boolean',
+
+        'image.*' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:51200',
+
+        'frame' => 'nullable|string|max:100',
+        'lens' => 'nullable|string|max:100',
+        'gender' => 'nullable|string|max:50',
+        'on_sale' => 'nullable|boolean',
+    ]);
+
+    /*
+    |--------------------------------------------------------------------------
+    | Generate Slug
+    |--------------------------------------------------------------------------
+    */
+
+    $slug = Str::slug($request->title);
+
+    $originalSlug = $slug;
+    $count = 1;
+
+    while (
+        Product::where('slug', $slug)
+            ->where('id', '!=', $product->id)
+            ->exists()
+    ) {
+        $slug = $originalSlug . '-' . $count;
+        $count++;
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Existing Images
+    |--------------------------------------------------------------------------
+    */
+
+    $imagePaths = json_decode($product->image, true) ?? [];
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | New Images
+    |--------------------------------------------------------------------------
+    */
+
     if ($request->hasFile('image')) {
-        // Delete old images if needed
+
+        // Delete old images
         foreach ($imagePaths as $oldImage) {
+
             if (Storage::disk('public')->exists($oldImage)) {
                 Storage::disk('public')->delete($oldImage);
             }
         }
 
-        $imagePaths = []; // Reset the image paths for the new uploads
+        $imagePaths = [];
 
-        // Store the new uploaded images
+        // Upload new images
         foreach ($request->file('image') as $image) {
+
             if ($image->isValid()) {
-                $imagePaths[] = $image->store('product', 'public'); // Store new images
+
+                $imageName = uniqid() . '.' . $image->getClientOriginalExtension();
+
+                $image->storeAs(
+                    'product',
+                    $imageName,
+                    'public'
+                );
+
+                $imagePaths[] = 'product/' . $imageName;
             }
         }
     }
 
-    // Update the product with new data
-    $product->update([
-    'title' => $request->title,
-    'description' => $request->description,
-    'price' => $request->price,
-    'sale_price' => $request->sale_price,
-    'sku' => $request->sku,
-    'stock' => $request->stock,
-    'category_id' => $request->category_id,
-    'status' => $request->status,
-    'featured' => $request->featured,
-    'trending' => $request->trending,
-    'image' => json_encode($imagePaths),
-    'frame' => $request->frame,
-    'lens' => $request->lens,
-    'gender' => $request->gender,
-    'on_sale' => $request->boolean('on_sale'),
-]);
 
-    // Redirect with success message
-    return redirect()->route('products.index')->with('success', 'Product updated successfully.');
+    /*
+    |--------------------------------------------------------------------------
+    | Update Product
+    |--------------------------------------------------------------------------
+    */
+
+    $product->update([
+
+        'title' => $request->title,
+
+        // Slug
+        'slug' => $slug,
+
+        'description' => $request->description,
+        'price' => $request->price,
+        'sale_price' => $request->sale_price,
+
+        'sku' => $request->sku,
+        'stock' => $request->stock,
+        'category_id' => $request->category_id,
+        'status' => $request->status,
+
+        'featured' => $request->boolean('featured'),
+        'trending' => $request->boolean('trending'),
+
+        'frame' => $request->frame,
+        'lens' => $request->lens,
+        'gender' => $request->gender,
+        'on_sale' => $request->boolean('on_sale'),
+
+        'image' => json_encode($imagePaths),
+    ]);
+
+
+    return redirect()
+        ->route('products.index')
+        ->with('success', 'Product updated successfully.');
 }
 
 

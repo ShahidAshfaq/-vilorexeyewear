@@ -494,7 +494,7 @@
                         <div class="trend-item">
 
                             {{-- Product Image --}}
-                            <a href="{{ route('product.show', $product->id) }}">
+                            <a href="{{ route('product.show',  $product->slug) }}">
 
                                 <img
                                     src="{{ asset('/storage/app/public/' . $firstImage) }}"
@@ -514,7 +514,7 @@
 
                                 {{-- Product Title --}}
                                 <h6>
-                                    <a href="{{ route('product.show', $product->id) }}">
+                                    <a href="{{ route('product.show',  $product->slug) }}">
                                         {{ Str::limit($product->title, 25) }}
                                     </a>
                                 </h6>
@@ -598,7 +598,7 @@
                         <div class="trend-item">
 
                             {{-- Product Image --}}
-                            <a href="{{ route('product.show', $product->id) }}">
+                            <a href="{{ route('product.show',  $product->slug) }}">
 
                                 <img
                                     src="{{ asset('/storage/app/public/' . $firstImage) }}"
@@ -618,7 +618,7 @@
 
                                 {{-- Product Title --}}
                                 <h6>
-                                    <a href="{{ route('product.show', $product->id) }}">
+                                    <a href="{{ route('product.show',  $product->slug) }}">
                                         {{ Str::limit($product->title, 25) }}
                                     </a>
                                 </h6>
@@ -699,7 +699,7 @@
                         <div class="trend-item">
 
                             {{-- Product Image --}}
-                            <a href="{{ route('product.show', $product->id) }}">
+                            <a href="{{ route('product.show',  $product->slug) }}">
 
                                 <img
                                     src="{{ asset('/storage/app/public/' . $firstImage) }}"
@@ -719,7 +719,7 @@
 
                                 {{-- Product Title --}}
                                 <h6>
-                                    <a href="{{ route('product.show', $product->id) }}">
+                                    <a href="{{ route('product.show',  $product->slug) }}">
                                         {{ Str::limit($product->title, 25) }}
                                     </a>
                                 </h6>

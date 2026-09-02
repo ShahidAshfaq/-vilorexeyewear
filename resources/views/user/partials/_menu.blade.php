@@ -18,7 +18,7 @@
                 {{-- ================= IMAGE ================= --}}
                 <div class="hover-product-image">
 
-                    <a href="{{ route('product.show', $product->id) }}">
+                    <a href="{{ route('product.show',  $product->slug) }}">
 
                         <img
                             src="{{ asset('/storage/app/public/' . $firstImage) }}"
@@ -137,7 +137,7 @@
                                 {{-- VIEW --}}
 
                                 <a
-                                    href="{{ route('product.show', $product->id) }}"
+                                    href="{{ route('product.show',  $product->slug) }}"
                                     class="hover-action-btn"
                                     title="View Product"
                                 >
@@ -152,7 +152,7 @@
                                 @if (!$outOfStock)
 
                                     <form
-                                        action="{{ route('cart.add', $product->id) }}"
+                                        action="{{ route('cart.add', $product->slug) }}"
                                         method="POST"
                                     >
 
@@ -205,7 +205,7 @@
 
                     <h5>
 
-                        <a href="{{ route('product.show', $product->id) }}">
+                        <a href="{{ route('product.show',  $product->slug) }}">
 
                             {{ Str::limit($product->title, 40) }}
 

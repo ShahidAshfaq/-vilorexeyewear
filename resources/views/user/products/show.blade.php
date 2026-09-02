@@ -287,7 +287,7 @@
                             {{-- ================= IMAGE ================= --}}
                             <div class="hover-product-image">
 
-                                <a href="{{ route('product.show', $related->id) }}">
+                                <a href="{{ route('product.show', $related->slug) }}">
 
                                     <img
                                         src="{{ asset('/storage/app/public/' . $relatedImage) }}"
@@ -424,7 +424,7 @@
 
                                             {{-- VIEW PRODUCT --}}
                                             <a
-                                                href="{{ route('product.show', $related->id) }}"
+                                                href="{{ route('product.show', $related->slug) }}"
                                                 class="hover-action-btn"
                                                 title="View Product"
                                             >
@@ -494,7 +494,7 @@
                                 {{-- Product Name --}}
                                 <h5>
 
-                                    <a href="{{ route('product.show', $related->id) }}">
+                                    <a href="{{ route('product.show', $related->slug) }}">
 
                                         {{ Str::limit($related->title, 40) }}
 
